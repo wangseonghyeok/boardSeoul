@@ -47,7 +47,7 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user, userID);
+  done(null, user);
 });
 passport.deserializeUser((id, done) => {
   db.collection("member").findOne({ userID: id }, (err, result) => {
@@ -70,7 +70,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "/public")));
 
-app.get("/", (req, res) => {
+app.get("/login", (req, res) => {
   res.render("index", { title: "로그인", userInfo: req.user });
 });
 app.get("/register", (req, res) => {
@@ -96,7 +96,11 @@ app.get("/logout", (req, res) => {
     res.send(`<script>alert("로그아웃되었습니다."); location.href="/"</script>`);
   }
 });
-app.post("/login", passport.authenticate("local", { failureRedirect: "/login", successRedirect: "/" }));
+app.get("/main", (req, res) => {
+  res.render("main", { title: "Seoul Photography List" });
+});
+app.post("/login", passport.authenticate("local", { failureRedirect: "/login", successRedirect: "/main" }));
+
 app.post("/register", (req, res) => {
   const userID = req.body.userID;
   const userPW = req.body.userPW;
