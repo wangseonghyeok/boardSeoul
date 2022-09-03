@@ -13,6 +13,10 @@ a {
   box-sizing: border-box;
 }
 
+button {
+  border: none;
+}
+
 .wrap .main {
   width: 100%;
   height: 100vh;
@@ -108,33 +112,46 @@ a {
   font-size: 16px;
   background-color: #111;
   color: #fff;
+  transition: all 0.5s;
+}
+.wrap .main .logScreen .login .btns button:hover,
+.wrap .main .logScreen .login .btns a:hover {
+  background: #0d82eb;
+  border: none;
 }
 .wrap .main .logScreen .login.on {
   display: none;
 }
-.wrap .main .logScreen .logout {
+.wrap .main .logScreen .sign {
+  position: relative;
   display: none;
   padding: 60px 60px;
 }
-.wrap .main .logScreen .logout .formBox .inputBox label {
+.wrap .main .logScreen .sign .close {
+  position: absolute;
+  top: 30px;
+  right: 60px;
+}
+.wrap .main .logScreen .sign .formBox .inputBox label {
   display: flex;
   width: 100%;
   flex-direction: column;
 }
-.wrap .main .logScreen .logout .formBox .inputBox label .label {
+.wrap .main .logScreen .sign .formBox .inputBox label .label {
   color: #999;
   font-size: 14px;
 }
-.wrap .main .logScreen .logout .formBox .inputBox label .w80 {
+.wrap .main .logScreen .sign .formBox .inputBox label .w80 {
   height: 50px;
   margin-top: 12px;
   justify-content: center;
   display: flex;
 }
-.wrap .main .logScreen .logout .formBox .inputBox label .w80 input {
+.wrap .main .logScreen .sign .formBox .inputBox label .w80 input {
   margin-top: 0 !important;
 }
-.wrap .main .logScreen .logout .formBox .inputBox label .w80 button {
+.wrap .main .logScreen .sign .formBox .inputBox label .w80 button {
+  box-sizing: border-box;
   padding: 0 10px;
   margin-left: 10px;
   height: 54px;
@@ -142,30 +159,35 @@ a {
   color: #fff;
   border-radius: 30px;
   font-size: 13px;
+  transition: all 0.5s;
 }
-.wrap .main .logScreen .logout .formBox .inputBox label input[type=text],
-.wrap .main .logScreen .logout .formBox .inputBox label input[type=password] {
+.wrap .main .logScreen .sign .formBox .inputBox label .w80 button:hover {
+  background: #0d82eb;
+  border: none;
+}
+.wrap .main .logScreen .sign .formBox .inputBox label input[type=text],
+.wrap .main .logScreen .sign .formBox .inputBox label input[type=password] {
   margin-top: 12px;
   height: 54px;
   border: 1px solid #ddd;
   border-radius: 30px;
   padding: 15px;
 }
-.wrap .main .logScreen .logout .formBox .inputBox label input[type=text]::placeholder,
-.wrap .main .logScreen .logout .formBox .inputBox label input[type=password]::placeholder {
+.wrap .main .logScreen .sign .formBox .inputBox label input[type=text]::placeholder,
+.wrap .main .logScreen .sign .formBox .inputBox label input[type=password]::placeholder {
   font-family: "Noto Sans KR";
   font-weight: 300;
   color: #999;
   font-size: 12px;
 }
-.wrap .main .logScreen .logout .formBox .inputBox label #userID,
-.wrap .main .logScreen .logout .formBox .inputBox label #userPW {
+.wrap .main .logScreen .sign .formBox .inputBox label #userID,
+.wrap .main .logScreen .sign .formBox .inputBox label #userPW {
   flex-grow: 1;
 }
-.wrap .main .logScreen .logout .formBox .inputBox:nth-child(2), .wrap .main .logScreen .logout .formBox .inputBox:nth-child(3) {
+.wrap .main .logScreen .sign .formBox .inputBox:nth-child(2), .wrap .main .logScreen .sign .formBox .inputBox:nth-child(3) {
   margin-top: 20px;
 }
-.wrap .main .logScreen .logout .formBox .btns {
+.wrap .main .logScreen .sign .formBox .btns {
   width: 100%;
   margin-top: 50px;
   display: flex;
@@ -174,16 +196,21 @@ a {
   height: 50px;
   border-radius: 30px;
 }
-.wrap .main .logScreen .logout .formBox .btns button,
-.wrap .main .logScreen .logout .formBox .btns a {
+.wrap .main .logScreen .sign .formBox .btns button,
+.wrap .main .logScreen .sign .formBox .btns a {
   border-radius: 30px;
   font-family: "Noto Sans KR";
   width: 100%;
   font-size: 16px;
   background-color: #111;
   color: #fff;
+  transition: all 0.5s;
 }
-.wrap .main .logScreen .logout.on {
+.wrap .main .logScreen .sign .formBox .btns button:hover,
+.wrap .main .logScreen .sign .formBox .btns a:hover {
+  background: #0d82eb;
+}
+.wrap .main .logScreen .sign.on {
   display: block;
 }
 

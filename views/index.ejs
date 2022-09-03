@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/reset.css" />
-    <link rel="stylesheet" href="/css/layout.css" />
-    <script src="/js/jquery-3.6.0.min.js"></script>
-  </head>
-  <body>
+<%- include("include/header"); %>
     <div class="wrap">
       <div class="main">
         <div class="text">
@@ -25,11 +11,11 @@
             <h2 class="title"><%= title %></h2>
             <div class="join">
               <p>신규 사용자이신가요?</p>
-              <a href="">
+              <a href="" class="loginBtn">
                 <span>계정만들기</span>
               </a>
             </div>
-            <form action="/login" method="POST" class="formBox">
+            <form action="/mainpage" method="POST" class="formBox">
               <div class="inputBox">
                 <label>
                   <span class="label">아이디</span>
@@ -47,8 +33,10 @@
               </div>
             </form>
           </div>
-          <div class="logout">
-            <a href=""><img src="../public/images/" alt=""></a>
+          <div class="sign">
+            <div class="close">
+              <a href="#"><img src="/images/close.png" alt="" /></a>
+            </div>
             <form action="/register" method="POST" id="join" class="formBox">
               <div class="inputBox">
                 <label>
@@ -62,17 +50,17 @@
               <div class="inputBox">
                 <label>
                   <span class="label">password</span>
-                  <input type="password" id="userPW" name="userID" placeholder="password를 입력하세요." />
+                  <input type="password" id="userPW" name="userPW" placeholder="password를 입력하세요." />
                 </label>
               </div>
               <div class="inputBox">
                 <label>
                   <span class="label">Name</span>
-                  <input type="password" id="userName" name="userName" placeholder="이름을 입력하세요." />
+                  <input type="text" id="userName" name="userName" placeholder="이름을 입력하세요." />
                 </label>
               </div>
               <div class="btns">
-                <button type="submit">로그아웃</button>
+                <button type="submit" data-value="10" id="btnJoin">회원가입</button>
               </div>
             </form>
           </div>
@@ -82,11 +70,83 @@
   </body>
   <script>
     const login = document.querySelector(".login");
-    const logout = document.querySelector(".logout");
-    login.addEventListener("click", (e) => {
+    const loginBtn = document.querySelector(".loginBtn");
+    const sign = document.querySelector(".sign");
+    const close = document.querySelector(".close");
+    loginBtn.addEventListener("click", (e) => {
       e.preventDefault();
       login.classList.add("on");
-      logout.classList.add("on");
+      sign.classList.add("on");
+    });
+    close.addEventListener("click", (e) => {
+      login.classList.remove("on");
+      sign.classList.remove("on");
+    });
+    let isIdChecked = false;
+
+    $("#btnIdCheck").on("click", () => {
+      if ($("#join #userID").val().length > 7) {
+        $.ajax({
+          url: "/idCheck",
+          method: "POST",
+          data: {
+            userID: $("#join #userID").val(),
+          },
+        }).done((response) => {
+          //console.log(response);
+          if (response.isOk) {
+            const result = confirm("쓸수 있는 아이디 입니다.");
+            if (result) {
+              $("#join #userID").attr("readonly", true);
+              isIdChecked = true;
+            } else {
+              $("#join #userID").focus();
+              $("#join #userID").val();
+              isIdChecked = false;
+            }
+          } else {
+            //alert("쓸수 없는 아이디 입니다.");
+            console.log("쓸 수 없는 아이디 입니다.");
+            $("#join #userID").val("");
+            $("#join #userID").focus();
+          }
+        });
+      } else {
+        alert("아이디는 8글자 이상이어야 합니다.");
+        $("#join #userID").focus();
+      }
+      return false;
+    });
+
+    $("#btnJoin").on("click", () => {
+      if ($("#join #userID ").val().trim().length < 8) {
+        alert("아이디는 최소 8자 이상이어야 합니다");
+        $("#join #userID").focus();
+        return false;
+      } else if (isIdChecked === false) {
+        alert("ID 중복체크를 해주세요.");
+        return false;
+      } else if ($("#join #userPW").val().trim().length < 3) {
+        alert("비밀번호는 최소 3자 이상이여야 합니다.");
+        $("#join #userPW").focus();
+        return false;
+      } else if ($("#join #userName").val().trim().length < 3) {
+        alert("닉네임은 최소 3자 이상이여야 합니다.");
+        $("#join #userPW").focus();
+        return false;
+      }
+      $.ajax({
+        url: "/registerAjax",
+        data: {
+          userID: $("#userID").val(),
+          userPW: $("#userPW").val(),
+        },
+        method: "POST",
+      }).done((response) => {
+        console.log(response.isJoin);
+        alert("회원가입이 잘 되었습니다.");
+        location.href = "/login";
+      });
     });
   </script>
 </html>
