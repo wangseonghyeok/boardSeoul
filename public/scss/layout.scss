@@ -2,7 +2,7 @@
 @import "mixin";
 
 body {
-  font-family: "Roboto", "Noto Sans KR", sans-serif;
+  font-family: "Lato", "Noto Sans KR", sans-serif;
   font-size: $font-normal;
   color: $font-color;
 }
@@ -16,6 +16,7 @@ a {
 button {
   border: none;
 }
+
 .wrap {
   .main {
     width: 100%;
@@ -219,6 +220,141 @@ button {
         &.on {
           display: block;
         }
+      }
+    }
+  }
+}
+#main {
+  .title {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0 30px 0;
+    font-size: 20px;
+    font-family: "Lato";
+    font-weight: 600;
+
+    h2 {
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        background-color: #111;
+        height: 2px;
+        left: 0;
+        bottom: -6px;
+      }
+    }
+  }
+  #contents {
+    max-width: 1320px;
+    margin: auto;
+
+    .formBox {
+      .inputBox {
+        border-bottom: 1px solid #ccc;
+        padding: 20px;
+        label {
+          display: flex;
+          align-items: center;
+          margin-bottom: 0;
+          .label {
+            width: 150px;
+          }
+          input[type="text"],
+          input[type="password"],
+          input[type="number"],
+          select {
+            height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+          }
+
+          textarea {
+            flex-grow: 1;
+            height: 300px;
+            resize: none;
+            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+          }
+          #title,
+          #date,
+          #desc {
+            flex-grow: 1;
+          }
+          .note-frame {
+            width: 100%;
+          }
+          #userJob {
+            width: 200px;
+          }
+          .genreList {
+            display: flex;
+            li {
+              margin-right: 20px;
+            }
+          }
+        }
+      }
+    }
+    .table {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      .head {
+        display: table-header-group;
+        background-color: #ddd;
+        span {
+          display: table-cell;
+          border-top: 1px solid #333;
+          text-align: center;
+          padding: 20px 0;
+          font-weight: 700;
+        }
+      }
+      .body {
+        display: table-row-group;
+        width: 100%;
+        > li {
+          display: table-row;
+          width: 100%;
+          .column {
+            display: table-cell;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 1px solid #d9d9d9;
+            vertical-align: middle;
+          }
+          .subject {
+            text-align: left;
+            &:hover {
+              text-decoration: underline;
+              color: rgb(3, 120, 199);
+            }
+          }
+        }
+      }
+    }
+
+    .btns {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      button,
+      a {
+        font-family: "Noto Sans KR";
+        display: flex;
+        font-size: 16px;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        padding: 0 20px;
+        background-color: #111;
+        color: #fff;
+        margin: 0 5px;
+        border-radius: 5px;
       }
     }
   }

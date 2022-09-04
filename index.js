@@ -5,6 +5,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
 const dotenv = require("dotenv").config();
+const cloudinary = require("cloudinary");
+const multer = require("multer");
 app.use(
   session({
     secret: "codenumber",
@@ -69,6 +71,18 @@ const PORT = app.get("port");
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "/public")));
+app.use("/upload", express.static(path.join(__dirname, "/upload")));
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = multer.diskStorage({});
+
+const fileUpload01 = multer({ storage: storage });
+const fileUpload02 = multer({ storage: storage });
 
 app.get("/login", (req, res) => {
   res.render("index", { title: "로그인", userInfo: req.user });
@@ -90,14 +104,24 @@ app.post("/registerAjax", (req, res) => {
   });
 });
 app.get("/logout", (req, res) => {
-  if (req.user) {
-    req.session.destroy();
-    //res.redirect("/");
-    res.send(`<script>alert("로그아웃되었습니다."); location.href="/"</script>`);
-  }
+  req.session.destroy(function (err) {
+    res.send(`<script>alert("로그아웃되었습니다."); location.href="/login"</script>`);
+  });
 });
 app.get("/main", (req, res) => {
-  res.render("main", { title: "Seoul Photography List" });
+  db.collection("list")
+    .find()
+    .toArray((err, result) => {
+      res.render("main", { title: "Seoul Photography List", main: result });
+    });
+});
+app.get("/detail/:title", (req, res) => {
+  const title = req.params.title;
+  db.collection("blog").findOne({ title: title }, (err, result) => {
+    if (result) {
+      res.render("detail", { title: "detail", data: result });
+    }
+  });
 });
 app.post("/login", passport.authenticate("local", { failureRedirect: "/login", successRedirect: "/main" }));
 
@@ -125,7 +149,28 @@ app.post("/register", (req, res) => {
   });
   //res.send(`아이디는 ${req.body.userID}==패스워드는 ${req.body.userPW}`);
 });
-
+app.post("/library", fileUpload01.single("image"), (req, res) => {
+  const title = req.body.title;
+  const date = req.body.date;
+  const desc = `<p><img style="width: 644px;" src="http://res.cloudinary.com/dyc7w2mfb/image/upload/v1661418079/bbpbeoabzcrrlrgj5imq.png"><br></p>`;
+  const point = req.body.point;
+  const image = req.file.filename;
+  console.log(req);
+  cloudinary.uploader.upload(req.file.path, (result) => {
+    db.collection("blog").insertOne({
+      title: title,
+      date: date,
+      category: category,
+      desc: desc,
+      point: point,
+      image: result.url,
+    });
+    res.send("잘 들어갔습니다.");
+  });
+});
+app.get("/write", (req, res) => {
+  res.render("write", { title: "Write" });
+});
 app.post("/idCheck", (req, res) => {
   const userID = req.body.userID;
   db.collection("member").findOne({ userID: userID }, (err, result) => {
