@@ -115,9 +115,14 @@ app.get("/main", (req, res) => {
       res.render("main", { title: "Seoul Photography List", main: result });
     });
 });
+
+app.get("/mypage", (req, res) => {
+  res.render("mypage", { title: "My Page", userInfo: req.user });
+});
+
 app.get("/detail/:title", (req, res) => {
   const title = req.params.title;
-  db.collection("blog").findOne({ title: title }, (err, result) => {
+  db.collection("list").findOne({ title: title }, (err, result) => {
     if (result) {
       res.render("detail", { title: "detail", data: result });
     }
@@ -142,25 +147,21 @@ app.post("/register", (req, res) => {
       console.log(err);
       res.send(`<script>alert("알 수 없는 오류로 회원가입이 되지 않았습니다. 잠시후 다시 가입해 주세요"); location.href="/"</script>`);
     }
-    //res.redirect("/login");
+
     res.send(`<script>alert("회원가입이 잘 되었습니다.");location.href="/"</script>`);
-    //res.render("registerSuccess", { title: "success" });
-    // res.redirect("/success");
   });
-  //res.send(`아이디는 ${req.body.userID}==패스워드는 ${req.body.userPW}`);
 });
 app.post("/library", fileUpload01.single("image"), (req, res) => {
   const title = req.body.title;
   const date = req.body.date;
-  const desc = `<p><img style="width: 644px;" src="http://res.cloudinary.com/dyc7w2mfb/image/upload/v1661418079/bbpbeoabzcrrlrgj5imq.png"><br></p>`;
+  const desc = req.body.desc;
   const point = req.body.point;
   const image = req.file.filename;
   console.log(req);
   cloudinary.uploader.upload(req.file.path, (result) => {
-    db.collection("blog").insertOne({
+    db.collection("list").insertOne({
       title: title,
       date: date,
-      category: category,
       desc: desc,
       point: point,
       image: result.url,
@@ -168,9 +169,16 @@ app.post("/library", fileUpload01.single("image"), (req, res) => {
     res.send("잘 들어갔습니다.");
   });
 });
+app.post("/summerNoteInsertImg", fileUpload02.single("summerNoteImg"), (req, res) => {
+  console.log(req);
+  cloudinary.uploader.upload(req.file.path, (result) => {
+    res.json({ cloudinaryImgSrc: result.url });
+  });
+});
 app.get("/write", (req, res) => {
   res.render("write", { title: "Write" });
 });
+
 app.post("/idCheck", (req, res) => {
   const userID = req.body.userID;
   db.collection("member").findOne({ userID: userID }, (err, result) => {
@@ -182,6 +190,7 @@ app.post("/idCheck", (req, res) => {
     }
   });
 });
+
 app.listen(PORT, () => {
   console.log(`${PORT}에서 서버 대기중`);
 });

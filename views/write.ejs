@@ -1,6 +1,8 @@
 <%- include("include/header"); %>
 <main id="main">
-  <h2 class="title"><%= title %></h2>
+  <div class="title">
+    <h2><%= title %></h2>
+  </div>
   <div id="contents">
     <form action="/library" method="POST" id="join" class="formBox" enctype="multipart/form-data">
       <div class="inputBox">
@@ -40,3 +42,30 @@
     </form>
   </div>
 </main>
+<script>
+  const date = document.querySelector("#date");
+  const picker = new Lightpick({ field: date, format: "YYYY-MM-DD" });
+  $("#desc").summernote({
+    height: 400,
+    callbacks: {
+      onImageUpload: function (files) {
+        sendImageCloudinary(files[0], this);
+      },
+    },
+  });
+  function sendImageCloudinary(file, editor) {
+    const sendImgData = new FormData();
+    sendImgData.append("summerNoteImg", file);
+    $.ajax({
+      url: "/summerNoteInsertImg",
+      data: sendImgData,
+      method: "POST",
+      contentType: false,
+      processData: false,
+      enctype: "multipart/form-data",
+      cache: false,
+    }).done((response) => {
+      $(editor).summernote("editor.insertImage", response.cloudinaryImgSrc);
+    });
+  }
+</script>
