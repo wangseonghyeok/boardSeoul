@@ -10,9 +10,9 @@ const multer = require("multer");
 app.use(
   session({
     secret: "codenumber",
-    resave: true,
+    resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 },
+    cookie: { maxAge: 1000 * 60 * 60, secure: false },
   })
 );
 app.use(passport.initialize());
@@ -49,11 +49,14 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+  done(null, user.userID);
 });
 passport.deserializeUser((id, done) => {
   db.collection("member").findOne({ userID: id }, (err, result) => {
     done(null, result);
+    if (err) {
+      console.log(err);
+    }
   });
 });
 
@@ -109,17 +112,38 @@ app.get("/logout", (req, res) => {
   });
 });
 app.get("/main", (req, res) => {
-  db.collection("list")
-    .find()
-    .toArray((err, result) => {
-      res.render("main", { title: "Seoul Photography List", main: result });
-    });
+  if (req.user) {
+    db.collection("list")
+      .find()
+      .toArray((err, result) => {
+        res.render("main", { title: "Seoul Photography List", main: result });
+      });
+  } else {
+    res.send(`<script>alert("서버가 끊겼습니다."); location.href="/login"</script>`);
+  }
 });
 
 app.get("/mypage", (req, res) => {
-  res.render("mypage", { title: "My Page", userInfo: req.user });
+  // console.log(req.user.userID);
+  if (req.user) {
+    res.render("mypage", { title: "My Page", userInfo: req.user });
+  } else {
+    res.send(`<script>alert("서버가 끊겼습니다."); location.href="/login"</script>`);
+  }
 });
+app.post("/mypage", (req, res) => {
+  const userID = req.body.userID;
+  const userPW = req.body.userPW;
+  const userName = req.body.userName;
 
+  db.collection("member").updateOne({ userID: userID }, { $set: { userID: userID, userPW: userPW, userName: userName } }, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(result);
+    res.send(`<script>alert("회원정보 수정이 되었습니다.");location.href="/login";</script>`);
+  });
+});
 app.get("/detail/:title", (req, res) => {
   const title = req.params.title;
   db.collection("list").findOne({ title: title }, (err, result) => {

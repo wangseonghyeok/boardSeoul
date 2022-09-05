@@ -1,17 +1,4 @@
-<%- include("include/main"); %>
-<header id="header">
-  <h1 id="logo">
-    <a href="/main"><img src="/images/logo.png" alt="" /></a>
-  </h1>
-  <ul>
-    <li>
-      <a href="/mypage">마이페이지<img src="/images/user.png" alt="" /></a>
-    </li>
-    <li>
-      <a href="/logout">로그아웃<img src="/images/logout.png" alt="" /></a>
-    </li>
-  </ul>
-</header>
+<%- include("include/main"); %> <%- include("include/header"); %>
 <main id="main">
   <div class="contents">
     <div class="title">
@@ -27,7 +14,7 @@
           <div class="inner">
             <div class="img"><img src="<%= item.image %>" alt="" /></div>
             <div class="txt">
-              <div class="sub"><%= item.desc %></div>
+              <div class="sub"><%- item.desc %></div>
               <p class="date"><%= item.date %></p>
               <p class="point">평점 : <%= item.point %></p>
             </div>
@@ -36,7 +23,7 @@
         </a>
       </li>
       <% }) %>
-      <!-- <li>
+      <li>
         <a href="">
           <div class="inner">
             <div class="img"><img src="/images/list01.png" alt="" /></div>
@@ -48,7 +35,46 @@
           </div>
           <h3 class="listTitle">광화문 광장</h3>
         </a>
-      </li> -->
+      </li>
+      <li>
+        <a href="">
+          <div class="inner">
+            <div class="img"><img src="/images/list01.png" alt="" /></div>
+            <div class="txt">
+              <p class="sub">경복궁의 남쪽에 있는 정문이다. '임금의 큰 덕(德)이 온 나라를 비춘다'는 의미이다. ...</p>
+              <p class="date">2022-09-01</p>
+              <img src="/images/icon.png" alt="" />
+            </div>
+          </div>
+          <h3 class="listTitle">광화문 광장</h3>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <div class="inner">
+            <div class="img"><img src="/images/list01.png" alt="" /></div>
+            <div class="txt">
+              <p class="sub">경복궁의 남쪽에 있는 정문이다. '임금의 큰 덕(德)이 온 나라를 비춘다'는 의미이다. ...</p>
+              <p class="date">2022-09-01</p>
+              <img src="/images/icon.png" alt="" />
+            </div>
+          </div>
+          <h3 class="listTitle">광화문 광장</h3>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <div class="inner">
+            <div class="img"><img src="/images/list01.png" alt="" /></div>
+            <div class="txt">
+              <p class="sub">경복궁의 남쪽에 있는 정문이다. '임금의 큰 덕(德)이 온 나라를 비춘다'는 의미이다. ...</p>
+              <p class="date">2022-09-01</p>
+              <img src="/images/icon.png" alt="" />
+            </div>
+          </div>
+          <h3 class="listTitle">광화문 광장</h3>
+        </a>
+      </li>
     </ul>
   </div>
 </main>

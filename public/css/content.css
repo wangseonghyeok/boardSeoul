@@ -23,6 +23,7 @@ button {
   background-color: #111;
 }
 #header #logo {
+  font-size: 0rem;
   color: #fff;
   height: 90px;
   display: flex;
@@ -95,20 +96,20 @@ button {
   font-size: 15px;
 }
 #main .contents .list {
-  max-width: 1320px;
+  max-width: 1319px;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
 }
 #main .contents .list li {
-  padding: 30px 40px 40px 0;
+  padding: 50px 40px 40px 0;
 }
 #main .contents .list li a .inner {
   position: relative;
 }
 #main .contents .list li a .inner .img img {
-  width: 300px;
-  height: 300px;
+  width: 413px;
+  height: 320px;
   background: contain;
   background: cover;
   border-radius: 10px;
@@ -117,8 +118,8 @@ button {
   opacity: 0;
   color: #fff;
   z-index: 2;
-  width: 300px;
-  height: 300px;
+  width: 413px;
+  height: 320px;
   position: absolute;
   padding: 30px 30px;
   top: 0;
@@ -167,6 +168,16 @@ button {
   font-weight: 600;
   margin-top: 10px;
 }
-#main .contents .list li:nth-child(4n) {
-  padding: 0 0 40px 0;
+#main .contents .list li:nth-child(3n) {
+  padding: 50px 0 40px 0;
+}
+
+@media screen and (max-width: 1340px) {
+  #main .contents .list {
+    display: flex;
+    justify-content: center;
+  }
+  #main .contents .list li:nth-child(3n) {
+    padding: 50px 40px 40px 0;
+  }
 }
