@@ -107,9 +107,13 @@ app.post("/registerAjax", (req, res) => {
   });
 });
 app.get("/logout", (req, res) => {
-  req.session.destroy(function (err) {
-    res.send(`<script>alert("로그아웃되었습니다."); location.href="/login"</script>`);
-  });
+  if (req.user) {
+    req.session.destroy(function (err) {
+      res.send(`<script>alert("로그아웃되었습니다."); location.href="/login"</script>`);
+    });
+  } else {
+    res.send(`<script>alert("서버가 끊겼습니다."); location.href="/login"</script>`);
+  }
 });
 app.get("/main", (req, res) => {
   if (req.user) {
@@ -154,6 +158,26 @@ app.get("/detail/:title", (req, res) => {
 });
 app.post("/login", passport.authenticate("local", { failureRedirect: "/login", successRedirect: "/main" }));
 
+app.get("/delete", (req, res) => {
+  res.render("delete", { title: "Member Delete" });
+});
+app.post("/delete", (req, res) => {
+  if (req.user) {
+    console.log(req.user.userID);
+    const userPW = req.body.userPW;
+    db.collection("member").deleteOne({ userID: req.user.userID, userPW: userPW }, (err, result) => {
+      console.log(result);
+      if (result.deletedCount > 0) {
+        res.send(`<script>alert("회원탈퇴 되었습니다.");location.href="/login"</script>`);
+      } else {
+        res.send(`<script>alert("비밀번호 확인해주세요.");location.href="/delete";</script>`);
+      }
+    });
+  } else {
+    res.send(`<script>alert("서버가 끊겼습니다."); location.href="/login"</script>`);
+  }
+});
+
 app.post("/register", (req, res) => {
   const userID = req.body.userID;
   const userPW = req.body.userPW;
@@ -190,7 +214,7 @@ app.post("/library", fileUpload01.single("image"), (req, res) => {
       point: point,
       image: result.url,
     });
-    res.send("잘 들어갔습니다.");
+    res.send(`<script>alert("서버가 끊겼습니다."); location.href="/main"</script>`);
   });
 });
 app.post("/summerNoteInsertImg", fileUpload02.single("summerNoteImg"), (req, res) => {
@@ -200,9 +224,12 @@ app.post("/summerNoteInsertImg", fileUpload02.single("summerNoteImg"), (req, res
   });
 });
 app.get("/write", (req, res) => {
-  res.render("write", { title: "Write" });
+  if (req.user) {
+    res.render("write", { title: "Write" });
+  } else {
+    res.send(`<script>alert("서버가 끊겼습니다."); location.href="/login"</script>`);
+  }
 });
-
 app.post("/idCheck", (req, res) => {
   const userID = req.body.userID;
   db.collection("member").findOne({ userID: userID }, (err, result) => {
@@ -214,7 +241,6 @@ app.post("/idCheck", (req, res) => {
     }
   });
 });
-
 app.listen(PORT, () => {
   console.log(`${PORT}에서 서버 대기중`);
 });

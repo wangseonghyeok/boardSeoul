@@ -348,6 +348,6 @@ button {
 @media all and (max-width: 1200px) {
   #contents {
     width: 100%;
-    padding: 100px 20px;
+    padding: 0 20px;
   }
 }

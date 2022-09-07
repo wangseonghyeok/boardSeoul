@@ -83,6 +83,7 @@ button {
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 #main .contents .write a {
   display: flex;
@@ -96,19 +97,19 @@ button {
   font-size: 15px;
 }
 #main .contents .list {
-  max-width: 1319px;
+  max-width: 1380px;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
 }
 #main .contents .list li {
-  padding: 50px 40px 40px 0;
+  padding: 20px 20px;
 }
 #main .contents .list li a .inner {
   position: relative;
 }
 #main .contents .list li a .inner .img img {
-  width: 413px;
+  width: 420px;
   height: 320px;
   background: contain;
   background: cover;
@@ -118,7 +119,7 @@ button {
   opacity: 0;
   color: #fff;
   z-index: 2;
-  width: 413px;
+  width: 420px;
   height: 320px;
   position: absolute;
   padding: 30px 30px;
@@ -132,10 +133,23 @@ button {
   bottom: 30px;
 }
 #main .contents .list li a .inner .txt .sub {
+  color: #fff;
   font-size: 15px;
   line-height: 1.5;
-  height: 110px;
+  height: 101px;
   overflow: hidden;
+}
+#main .contents .list li a .inner .txt .sub p {
+  color: #fff;
+  margin-bottom: 0rem !important;
+  text-overflow: ellipsis !important;
+}
+#main .contents .list li a .inner .txt .sub p span {
+  text-overflow: ellipsis !important;
+  color: #fff !important;
+  font-family: "Noto Sans KR" !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
 }
 #main .contents .list li a .inner .txt .date {
   font-size: 15px;
@@ -168,16 +182,169 @@ button {
   font-weight: 600;
   margin-top: 10px;
 }
-#main .contents .list li:nth-child(3n) {
-  padding: 50px 0 40px 0;
+#main .popupCover {
+  display: none;
+}
+#main .popupCover .popupList {
+  z-index: 2;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+}
+#main .popupCover .popupList li {
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  margin: auto;
+  width: 660px;
+  background: #fff;
+}
+#main .popupCover .popupList li .close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+}
+#main .popupCover .popupList li a .popupImg img {
+  width: 660px;
+  height: 400px;
+  background: contain;
+  background: cover;
+}
+#main .popupCover .popupList li a .popupTxt {
+  position: relative;
+  padding: 50px 60px 0px 60px;
+}
+#main .popupCover .popupList li a .popupTxt .date {
+  position: absolute;
+  right: 60px;
+  top: 0;
+}
+#main .popupCover .popupList li a .popupTxt .sub p {
+  margin-bottom: 0rem;
+}
+#main .popupCover .popupList li a .popupTxt .sub p span {
+  color: #111 !important;
+  font-family: "Noto Sans KR" !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+}
+#main .popupCover .popupList li a .popupTxt .t1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+#main .popupCover .popupList li .btns {
+  width: 100%;
+  padding: 0px 60px 50px 60px;
+  display: flex;
+  justify-content: space-between;
+}
+#main .popupCover .popupList li .btns a {
+  color: #fff;
+  width: 255px;
+  height: 50px;
+  border-radius: 30px;
+  background: #111;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#main .popupCover .popupList.on {
+  display: block;
+}
+#main .popupCover.on {
+  display: block;
+}
+#main .popupInput {
+  display: none;
+}
+#main .popupInput .popupEdit {
+  z-index: 2;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#main .popupInput .popupEdit .popupBox {
+  position: relative;
+  width: 660px;
+  background: #fff;
+}
+#main .popupInput .popupEdit .popupBox .editClose {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
+#main .popupInput .popupEdit .popupBox .formBox {
+  padding: 60px;
+}
+#main .popupInput .popupEdit .popupBox .formBox .inputBox label {
+  width: 100%;
+}
+#main .popupInput .popupEdit .popupBox .formBox .inputBox label span {
+  margin-top: 20px;
+}
+#main .popupInput .popupEdit .popupBox .formBox .inputBox label .label {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 500;
+  display: block;
+}
+#main .popupInput .popupEdit .popupBox .formBox .inputBox label input {
+  border-radius: 10px;
+  border-color: #ddd;
+  margin-top: 10px;
+  width: 100%;
+  height: 50px;
+  padding-left: 10px;
+}
+#main .popupInput .popupEdit .popupBox .formBox .inputBox label input::placeholder {
+  font-size: 14px;
+}
+#main .popupInput .popupEdit .popupBox .formBox .inputBox label .note-editor {
+  height: 200px;
+  margin-top: 10px;
+}
+#main .popupInput .popupEdit .popupBox .formBox .inputBox:nth-child(5) input {
+  padding-left: 0px;
+}
+#main .popupInput .popupEdit .popupBox .formBox .btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#main .popupInput .popupEdit .popupBox .formBox .btns button {
+  color: #fff;
+  width: 255px;
+  height: 50px;
+  border-radius: 30px;
+  background: #111;
+  text-align: center;
+}
+#main .popupInput .popupEdit.on {
+  display: block;
+}
+#main .popupInput.on {
+  display: block;
 }
 
-@media screen and (max-width: 1340px) {
+@media screen and (max-width: 1400px) {
   #main .contents .list {
-    display: flex;
     justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
   }
-  #main .contents .list li:nth-child(3n) {
-    padding: 50px 40px 40px 0;
+  #main .contents .list li {
+    display: inline-block;
   }
 }

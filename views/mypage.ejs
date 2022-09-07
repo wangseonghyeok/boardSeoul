@@ -33,14 +33,7 @@
 </main>
 <script>
   $("#btnJoin").on("click", () => {
-    if ($("#join #userID ").val().trim().length < 8) {
-      alert("아이디는 최소 8자 이상이어야 합니다");
-      $("#join #userID").focus();
-      return false;
-    } else if (isIdChecked === false) {
-      alert("ID 중복체크를 해주세요.");
-      return false;
-    } else if ($("#join #userPW").val().trim().length < 3) {
+    if ($("#join #userPW").val().trim().length < 3) {
       alert("비밀번호는 최소 3자 이상이여야 합니다.");
       $("#join #userPW").focus();
       return false;

@@ -1,0 +1,30 @@
+<%- include("include/header"); %>
+<main id="main">
+  <div id="contents">
+    <h2 class="title"><%= title %></h2>
+
+    <form action="/delete" method="POST" id="join" class="formBox">
+      <div class="inputBox">
+        <label>
+          <span class="label">Password</span>
+          <input type="password" id="userPW" name="userPW" placeholder="password를 입력하세요" />
+        </label>
+      </div>
+
+      <div class="btns">
+        <button type="submit" data-value="10" id="btnJoin">회원탈퇴</button>
+        <button type="reset">취소</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script>
+  $("#btnJoin").on("click", () => {
+    if ($("#userPW").val().trim().length <= 0) {
+      alert("패스워드를 입력해 주세요.");
+      $("#userPW").focus();
+      return false;
+    }
+  });
+</script>

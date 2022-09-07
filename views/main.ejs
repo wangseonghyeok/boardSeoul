@@ -10,7 +10,7 @@
     <ul class="list">
       <% main.forEach((item,idx)=>{ %>
       <li>
-        <a href="/detail/<%= item.title %>">
+        <a href="/detail/<%= item.title %>" class="popup">
           <div class="inner">
             <div class="img"><img src="<%= item.image %>" alt="" /></div>
             <div class="txt">
@@ -23,58 +23,136 @@
         </a>
       </li>
       <% }) %>
-      <li>
-        <a href="">
-          <div class="inner">
-            <div class="img"><img src="/images/list01.png" alt="" /></div>
-            <div class="txt">
-              <p class="sub">경복궁의 남쪽에 있는 정문이다. '임금의 큰 덕(德)이 온 나라를 비춘다'는 의미이다. ...</p>
-              <p class="date">2022-09-01</p>
-              <img src="/images/icon.png" alt="" />
-            </div>
-          </div>
-          <h3 class="listTitle">광화문 광장</h3>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <div class="inner">
-            <div class="img"><img src="/images/list01.png" alt="" /></div>
-            <div class="txt">
-              <p class="sub">경복궁의 남쪽에 있는 정문이다. '임금의 큰 덕(德)이 온 나라를 비춘다'는 의미이다. ...</p>
-              <p class="date">2022-09-01</p>
-              <img src="/images/icon.png" alt="" />
-            </div>
-          </div>
-          <h3 class="listTitle">광화문 광장</h3>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <div class="inner">
-            <div class="img"><img src="/images/list01.png" alt="" /></div>
-            <div class="txt">
-              <p class="sub">경복궁의 남쪽에 있는 정문이다. '임금의 큰 덕(德)이 온 나라를 비춘다'는 의미이다. ...</p>
-              <p class="date">2022-09-01</p>
-              <img src="/images/icon.png" alt="" />
-            </div>
-          </div>
-          <h3 class="listTitle">광화문 광장</h3>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <div class="inner">
-            <div class="img"><img src="/images/list01.png" alt="" /></div>
-            <div class="txt">
-              <p class="sub">경복궁의 남쪽에 있는 정문이다. '임금의 큰 덕(德)이 온 나라를 비춘다'는 의미이다. ...</p>
-              <p class="date">2022-09-01</p>
-              <img src="/images/icon.png" alt="" />
-            </div>
-          </div>
-          <h3 class="listTitle">광화문 광장</h3>
-        </a>
-      </li>
     </ul>
+
+    <div class="popupCover">
+      <ul class="popupList">
+        <% main.forEach((item,idx)=>{ %>
+        <li>
+          <img src="/images/closeDark.png" class="close" />
+          <a href="/detail/<%= item.title %>">
+            <div class="popupImg"><img src="<%= item.image %>" alt="" /></div>
+            <div class="popupTxt">
+              <!-- <div class="date"><%= item.date %></div> -->
+              <div class="t1"><%= item.title %></div>
+              <div class="sub"><%- item.desc %></div>
+            </div>
+          </a>
+          <div class="btns">
+            <a href="#" class="chage">수정</a>
+            <a href="#">삭제</a>
+          </div>
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+
+    <div class="popupInput">
+      <div class="popupEdit">
+        <div class="popupBox">
+          <img src="/images/closeDark.png" class="editClose" />
+          <form action="/library" method="POST" id="join" class="formBox" enctype="multipart/form-data">
+            <div class="inputBox">
+              <label>
+                <span class="label">제목</span>
+                <input type="text" id="title" name="title" placeholder="제목을 입력하세요" />
+              </label>
+            </div>
+            <div class="inputBox">
+              <label>
+                <span class="label">날짜</span>
+                <input type="text" id="date" name="date" placeholder="날짜" />
+              </label>
+            </div>
+            <div class="inputBox">
+              <label>
+                <span class="label">내용</span>
+                <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
+              </label>
+            </div>
+            <div class="inputBox">
+              <label>
+                <span class="label">평점</span>
+                <input type="number" max="5" min="0" step="0.1" id="point" name="point" />
+              </label>
+            </div>
+            <div class="inputBox">
+              <label>
+                <span class="label">대표이미지</span>
+                <input type="file" name="image" id="image" />
+              </label>
+            </div>
+            <div class="btns">
+              <button type="submit" id="btnJoin">확인</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
+<script>
+  const list = document.querySelectorAll(".list li");
+  // console.log(list);
+  const popupList = document.querySelectorAll(".popupList li");
+  const close = document.querySelector(".close");
+  const popup = document.querySelector(".popup");
+
+  const date = document.querySelector("#date");
+  const editClose = document.querySelector(".editClose");
+  const chage = document.querySelector(".chage");
+  const popupInput = document.querySelector(".popupInput");
+  //
+  list.forEach(function (item, idx) {
+    // console.log(item);
+    console.log(idx);
+    item.addEventListener("click", function () {
+      popupList.forEach(function (item01, idx01) {
+        // console.log(idx01);
+        const popupCover = document.querySelector(".popupCover");
+        // idx === idx01 ? item.classList.add("on") : "";
+        if (idx === idx01) {
+          popupCover.classList.add("on");
+        }
+      });
+    });
+  });
+
+  // popup.addEventListener("click", () => {
+  //   popupCover.classList.add("on");
+  // });
+  // close.addEventListener("click", () => {
+  //   popupCover.classList.remove("on");
+  // });
+  // chage.addEventListener("click", () => {
+  //   popupInput.classList.add("on");
+  // });
+  // editClose.addEventListener("click", () => {
+  //   popupInput.classList.remove("on");
+  //   popupCover.classList.remove("on");
+  // });
+  const picker = new Lightpick({ field: date, format: "YYYY-MM-DD" });
+  $("#desc").summernote({
+    height: 400,
+    callbacks: {
+      onImageUpload: function (files) {
+        sendImageCloudinary(files[0], this);
+      },
+    },
+  });
+  function sendImageCloudinary(file, editor) {
+    const sendImgData = new FormData();
+    sendImgData.append("summerNoteImg", file);
+    $.ajax({
+      url: "/summerNoteInsertImg",
+      data: sendImgData,
+      method: "POST",
+      contentType: false,
+      processData: false,
+      enctype: "multipart/form-data",
+      cache: false,
+    }).done((response) => {
+      $(editor).summernote("editor.insertImage", response.cloudinaryImgSrc);
+    });
+  }
+</script>

@@ -82,6 +82,7 @@ button {
       width: 100%;
       display: flex;
       justify-content: center;
+      margin-bottom: 20px;
       a {
         display: flex;
         align-items: center;
@@ -95,18 +96,19 @@ button {
       }
     }
     .list {
-      max-width: 1319px;
+      max-width: 1380px;
       margin: auto;
+
       display: flex;
       flex-wrap: wrap;
       li {
-        padding: 50px 40px 40px 0;
+        padding: 20px 20px;
         a {
           .inner {
             position: relative;
             .img {
               img {
-                width: 413px;
+                width: 420px;
                 height: 320px;
                 //     object-fit: cover;
                 background: contain;
@@ -118,7 +120,7 @@ button {
               opacity: 0;
               color: #fff;
               z-index: 2;
-              width: 413px;
+              width: 420px;
               height: 320px;
               position: absolute;
               padding: 30px 30px;
@@ -131,10 +133,23 @@ button {
                 bottom: 30px;
               }
               .sub {
+                color: #fff;
                 font-size: 15px;
                 line-height: 1.5;
-                height: 110px;
+                height: 101px;
                 overflow: hidden;
+                p {
+                  color: #fff;
+                  margin-bottom: 0rem !important;
+                  text-overflow: ellipsis !important;
+                  span {
+                    text-overflow: ellipsis !important;
+                    color: #fff !important;
+                    font-family: "Noto Sans KR" !important;
+                    font-size: 15px !important;
+                    line-height: 1.5 !important;
+                  }
+                }
               }
               .date {
                 font-size: 15px;
@@ -171,21 +186,195 @@ button {
           }
         }
         &:nth-child(3n) {
-          padding: 50px 0 40px 0;
+          // padding: 50px 0 40px 0;
+        }
+        :nth-child(2n-1) {
         }
       }
     }
   }
+  .popupCover {
+    display: none;
+
+    .popupList {
+      z-index: 2;
+      top: 0;
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      li {
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        .close {
+          position: absolute;
+          top: 30px;
+          right: 30px;
+        }
+        overflow: hidden;
+        border-radius: 30px;
+        margin: auto;
+        width: 660px;
+        background: #fff;
+        a {
+          // pointer-events: none;
+          .popupImg {
+            img {
+              width: 660px;
+              height: 400px;
+              background: contain;
+              background: cover;
+            }
+          }
+          .popupTxt {
+            position: relative;
+            padding: 50px 60px 0px 60px;
+            .date {
+              position: absolute;
+              right: 60px;
+              top: 0;
+            }
+            .sub {
+              p {
+                margin-bottom: 0rem;
+                span {
+                  color: #111 !important;
+                  font-family: "Noto Sans KR" !important;
+                  font-size: 15px !important;
+                  line-height: 1.5 !important;
+                }
+              }
+            }
+            .t1 {
+              font-size: 20px;
+              font-weight: 600;
+              margin-bottom: 20px;
+            }
+          }
+        }
+        .btns {
+          width: 100%;
+          padding: 0px 60px 50px 60px;
+          display: flex;
+          justify-content: space-between;
+
+          a {
+            color: #fff;
+            width: 255px;
+            height: 50px;
+            border-radius: 30px;
+            background: #111;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+      &.on {
+        display: block;
+      }
+    }
+    &.on {
+      display: block;
+    }
+  }
+  .popupInput {
+    display: none;
+
+    .popupEdit {
+      z-index: 2;
+      top: 0;
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .popupBox {
+        position: relative;
+        width: 660px;
+        background: #fff;
+        .editClose {
+          position: absolute;
+          right: 30px;
+          top: 30px;
+        }
+        .formBox {
+          padding: 60px;
+          .inputBox {
+            label {
+              span {
+                margin-top: 20px;
+              }
+              width: 100%;
+              .label {
+                width: 100%;
+                font-size: 18px;
+                font-weight: 500;
+                display: block;
+              }
+              input {
+                border-radius: 10px;
+                border-color: #ddd;
+                margin-top: 10px;
+                width: 100%;
+                height: 50px;
+                padding-left: 10px;
+                &::placeholder {
+                  font-size: 14px;
+                }
+              }
+              .note-editor {
+                height: 200px;
+                margin-top: 10px;
+              }
+            }
+            &:nth-child(5) {
+              input {
+                padding-left: 0px;
+              }
+            }
+          }
+          .btns {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            button {
+              color: #fff;
+              width: 255px;
+              height: 50px;
+              border-radius: 30px;
+              background: #111;
+              text-align: center;
+            }
+          }
+        }
+      }
+      &.on {
+        display: block;
+      }
+    }
+    &.on {
+      display: block;
+    }
+  }
 }
-@media screen and (max-width: 1340px) {
+
+@media screen and (max-width: 1400px) {
   #main {
     .contents {
       .list {
-        display: flex;
         justify-content: center;
+        flex-wrap: wrap;
+        align-items: center;
         li {
+          display: inline-block;
           &:nth-child(3n) {
-            padding: 50px 40px 40px 0;
+            // padding: 50px 40px 40px 0;
           }
         }
       }
