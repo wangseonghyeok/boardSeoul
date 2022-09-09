@@ -29,8 +29,8 @@
       <ul class="popupList">
         <% main.forEach((item,idx)=>{ %>
         <li>
-          <img src="/images/closeDark.png" class="close" />
           <a href="/detail/<%= item.title %>">
+            <img src="/images/closeDark.png" class="close" />
             <div class="popupImg"><img src="<%= item.image %>" alt="" /></div>
             <div class="popupTxt">
               <!-- <div class="date"><%= item.date %></div> -->
@@ -40,7 +40,7 @@
           </a>
           <div class="btns">
             <a href="#" class="chage">수정</a>
-            <a href="#">삭제</a>
+            <a href="/fileDelete">삭제</a>
           </div>
         </li>
         <% }) %>
@@ -51,7 +51,7 @@
       <div class="popupEdit">
         <div class="popupBox">
           <img src="/images/closeDark.png" class="editClose" />
-          <form action="/library" method="POST" id="join" class="formBox" enctype="multipart/form-data">
+          <form action="/detail" method="POST" id="join" class="formBox" enctype="multipart/form-data">
             <div class="inputBox">
               <label>
                 <span class="label">제목</span>
@@ -93,43 +93,51 @@
 </main>
 <script>
   const list = document.querySelectorAll(".list li");
-  // console.log(list);
   const popupList = document.querySelectorAll(".popupList li");
-  const close = document.querySelector(".close");
+  const close = document.querySelectorAll(".close");
   const popup = document.querySelector(".popup");
-
   const date = document.querySelector("#date");
   const editClose = document.querySelector(".editClose");
-  const chage = document.querySelector(".chage");
+  const chage = document.querySelectorAll(".chage");
+  const popupCover = document.querySelector(".popupCover");
   const popupInput = document.querySelector(".popupInput");
+  console.log(editClose);
   //
   list.forEach(function (item, idx) {
-    // console.log(item);
-    console.log(idx);
     item.addEventListener("click", function () {
       popupList.forEach(function (item01, idx01) {
         // console.log(idx01);
         const popupCover = document.querySelector(".popupCover");
-        // idx === idx01 ? item.classList.add("on") : "";
-        if (idx === idx01) {
-          popupCover.classList.add("on");
-        }
+        idx === idx01 ? (item01.style.display = "block") : (item01.style.display = "none");
+        popupCover.style.display = "block";
+        close.forEach(function (item02, idx02) {
+          item02.addEventListener("click", function () {
+            const popupCover = document.querySelector(".popupCover");
+            idx01 === idx02 ? (popupCover.style.display = "none") : "";
+          });
+        });
+        chage.forEach((item03, idx03) => {
+          item03.addEventListener("click", function () {
+            const popupInput = document.querySelector(".popupInput");
+            idx01 === idx03 ? (popupInput.style.display = "block") : "";
+          });
+        });
+        // editClose.forEach((item04, idx04) => {
+        //   item04.addEventListener("click", function () {
+        //     const popupInput = document.querySelector(".popupInput");
+        //     idx01 === idx04 ? (popupInput.style.display = "block") : "";
+        //   });
+        // });
       });
     });
   });
+  editClose.addEventListener("click", () => {
+    popupInput.style.display = "none";
+    popupCover.style.display = "none";
+  });
 
-  // popup.addEventListener("click", () => {
-  //   popupCover.classList.add("on");
-  // });
   // close.addEventListener("click", () => {
-  //   popupCover.classList.remove("on");
-  // });
-  // chage.addEventListener("click", () => {
-  //   popupInput.classList.add("on");
-  // });
-  // editClose.addEventListener("click", () => {
-  //   popupInput.classList.remove("on");
-  //   popupCover.classList.remove("on");
+  //   popupCover.style.display = "none";
   // });
   const picker = new Lightpick({ field: date, format: "YYYY-MM-DD" });
   $("#desc").summernote({

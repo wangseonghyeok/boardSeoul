@@ -186,25 +186,29 @@ button {
   display: none;
 }
 #main .popupCover .popupList {
-  z-index: 2;
-  top: 0;
-  position: absolute;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  position: absolute;
 }
 #main .popupCover .popupList li {
-  justify-content: center;
-  align-items: center;
-  position: relative;
+  display: inline-block;
+  display: block;
   overflow: hidden;
   border-radius: 30px;
   margin: auto;
   width: 660px;
   background: #fff;
 }
-#main .popupCover .popupList li .close {
+#main .popupCover .popupList li a {
+  position: relative;
+  z-index: 2;
+}
+#main .popupCover .popupList li a .close {
+  z-index: 2;
   position: absolute;
   top: 30px;
   right: 30px;
@@ -239,6 +243,7 @@ button {
   margin-bottom: 20px;
 }
 #main .popupCover .popupList li .btns {
+  z-index: 2;
   width: 100%;
   padding: 0px 60px 50px 60px;
   display: flex;
@@ -255,7 +260,17 @@ button {
   justify-content: center;
   align-items: center;
 }
-#main .popupCover .popupList.on {
+#main .popupCover .popupList li::after {
+  left: 0;
+  z-index: -10;
+  top: 0;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+#main .popupCover .popupList li.on {
   display: block;
 }
 #main .popupCover.on {

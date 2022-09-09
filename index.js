@@ -7,6 +7,7 @@ const session = require("express-session");
 const dotenv = require("dotenv").config();
 const cloudinary = require("cloudinary");
 const multer = require("multer");
+const { nextTick } = require("process");
 app.use(
   session({
     secret: "codenumber",
@@ -58,7 +59,7 @@ passport.deserializeUser((id, done) => {
       console.log(err);
     }
   });
-});
+});dcxf
 
 const MongoClient = require("mongodb").MongoClient;
 let db = null;
@@ -156,6 +157,30 @@ app.get("/detail/:title", (req, res) => {
     }
   });
 });
+app.post("/detail", (req, res) => {
+  const title = req.body.title;
+  const date = req.body.date;
+  const desc = req.body.desc;
+  const point = req.body.point;
+  const insert = {
+    title: title,
+    date: date,
+    desc: desc,
+    point: point,
+  };
+  console.log(req);
+  db.collection("list").updateOne(insert);
+  console.log(insert);
+
+  // db.collection("list").updateOne({ $set: { title: title, date: date, desc: desc, point: point } }, (err, result) => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  //   console.log(result);
+  //   res.send(`<script>alert("회원정보 수정이 되었습니다.");location.href="/login";</script>`);
+  // });
+});
+
 app.post("/login", passport.authenticate("local", { failureRedirect: "/login", successRedirect: "/main" }));
 
 app.get("/delete", (req, res) => {
@@ -223,6 +248,28 @@ app.post("/summerNoteInsertImg", fileUpload02.single("summerNoteImg"), (req, res
     res.json({ cloudinaryImgSrc: result.url });
   });
 });
+// app.get("/fileDelete", (req, res) => {
+//   if (req.user) {
+//     const title = req.body.title;
+//     const date = req.body.date;
+//     const desc = req.body.desc;
+//     const point = req.body.point;
+//     const image = req.body.image;
+//     const insertData = {
+//       title: title,
+//       date: date,
+//       desc: desc,
+//       point: point,
+//       image: image,
+//     };
+//     console.log(insertData);
+//     db.collection("list").deleteOne(insertData, (err, result) => {
+//       if (err) {
+//         console.log(err);
+//       }
+//     });
+//   }
+// });
 app.get("/write", (req, res) => {
   if (req.user) {
     res.render("write", { title: "Write" });

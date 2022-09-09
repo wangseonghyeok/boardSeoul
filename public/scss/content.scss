@@ -195,30 +195,32 @@ button {
   }
   .popupCover {
     display: none;
-
     .popupList {
-      z-index: 2;
-      top: 0;
-      position: absolute;
       width: 100%;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
       display: flex;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      position: absolute;
       li {
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        .close {
-          position: absolute;
-          top: 30px;
-          right: 30px;
-        }
+        display: inline-block;
+        display: block;
         overflow: hidden;
         border-radius: 30px;
         margin: auto;
         width: 660px;
         background: #fff;
+
         a {
+          position: relative;
+          .close {
+            z-index: 2;
+            position: absolute;
+            top: 30px;
+            right: 30px;
+          }
+          z-index: 2;
           // pointer-events: none;
           .popupImg {
             img {
@@ -255,6 +257,8 @@ button {
           }
         }
         .btns {
+          z-index: 2;
+
           width: 100%;
           padding: 0px 60px 50px 60px;
           display: flex;
@@ -272,9 +276,19 @@ button {
             align-items: center;
           }
         }
-      }
-      &.on {
-        display: block;
+        &::after {
+          left: 0;
+          z-index: -10;
+          top: 0;
+          content: "";
+          position: absolute;
+          width: 100%;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.5);
+        }
+        &.on {
+          display: block;
+        }
       }
     }
     &.on {
