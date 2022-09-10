@@ -39,7 +39,12 @@
             </div>
           </a>
           <div class="btns">
-            <a href="#" class="chage">수정</a>
+            <a
+              href="/detail/<%= item.title %>\
+              "
+              class="chage"
+              >수정</a
+            >
             <a href="/fileDelete">삭제</a>
           </div>
         </li>
@@ -101,6 +106,7 @@
   const chage = document.querySelectorAll(".chage");
   const popupCover = document.querySelector(".popupCover");
   const popupInput = document.querySelector(".popupInput");
+
   console.log(editClose);
   //
   list.forEach(function (item, idx) {
@@ -108,8 +114,10 @@
       popupList.forEach(function (item01, idx01) {
         // console.log(idx01);
         const popupCover = document.querySelector(".popupCover");
+        const body = document.querySelector(".body");
         idx === idx01 ? (item01.style.display = "block") : (item01.style.display = "none");
         popupCover.style.display = "block";
+        body.classList.add("on");
         close.forEach(function (item02, idx02) {
           item02.addEventListener("click", function () {
             const popupCover = document.querySelector(".popupCover");

@@ -5,6 +5,9 @@ body {
   font-family: "Lato", "Noto Sans KR", sans-serif;
   font-size: $font-normal;
   color: $font-color;
+  // &.on {
+  //   overflow-y: hidden;
+  // }
 }
 a {
   color: inherit;
@@ -35,14 +38,16 @@ button {
       }
     }
     .logScreen {
-      width: 460px;
+      // width: 460px;
+      width: clamp(300px, 80%, 460px);
       // height: 500px;
       background-color: #fff;
       border-radius: 30px;
       .login {
-        padding: 60px 60px;
+        // padding: 60px 60px;
+        padding: clamp(30px, 10vw, 60px);
         .title {
-          font-size: 30px;
+          font-size: clamp(22px, 4vw, 30px);
           font-weight: 600;
         }
         .join {
@@ -102,7 +107,7 @@ button {
         }
         .btns {
           width: 100%;
-          margin-top: 50px;
+          margin-top: clamp(30px, 3vw, 50px);
           display: flex;
           justify-content: center;
           background-color: #111;
@@ -130,11 +135,11 @@ button {
       .sign {
         position: relative;
         display: none;
-        padding: 60px 60px;
+        padding: clamp(30px, 10vw, 60px);
         .close {
           position: absolute;
           top: 30px;
-          right: 60px;
+          right: clamp(30px, 3vw, 60px);
         }
         .formBox {
           .inputBox {
@@ -196,7 +201,7 @@ button {
           }
           .btns {
             width: 100%;
-            margin-top: 50px;
+            margin-top: clamp(30px, 4vw, 50px);
             display: flex;
             justify-content: center;
             background-color: #111;
@@ -362,9 +367,50 @@ button {
     }
   }
 }
-@media all and (max-width: 1200px) {
-  #contents {
-    width: 100%;
-    padding: 0 20px;
+@media all and (max-width: 1320px) {
+  .wrap {
+    .main {
+      flex-direction: column;
+      #contents {
+        width: 100%;
+        padding: 0 20px;
+      }
+      .text {
+        margin: 0 auto;
+        padding-bottom: 40px;
+        // position: absolute;
+        // top: 80px;
+        // left: 50%;
+        // transform: translateX(-50%);
+        p {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+@media all and(max-width:720px) {
+  .wrap {
+    .main {
+      .logScreen {
+        .sign {
+          .formBox {
+            .inputBox {
+              label {
+                .w80 {
+                  button {
+                    font-size: 11px;
+                  }
+                }
+                #userID {
+                  flex-grow: none;
+                  width: 80%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

@@ -59,7 +59,7 @@ passport.deserializeUser((id, done) => {
       console.log(err);
     }
   });
-});dcxf
+});
 
 const MongoClient = require("mongodb").MongoClient;
 let db = null;
@@ -152,12 +152,15 @@ app.post("/mypage", (req, res) => {
 app.get("/detail/:title", (req, res) => {
   const title = req.params.title;
   db.collection("list").findOne({ title: title }, (err, result) => {
-    if (result) {
-      res.render("detail", { title: "detail", data: result });
+    // if (result) {
+    //   res.render("detail", { title: "detail", data: result });
+    // }
+    if (err) {
+      console.log(err);
     }
   });
 });
-app.post("/detail", (req, res) => {
+app.post("/detail:edit", (req, res) => {
   const title = req.body.title;
   const date = req.body.date;
   const desc = req.body.desc;
@@ -225,21 +228,29 @@ app.post("/register", (req, res) => {
   });
 });
 app.post("/library", fileUpload01.single("image"), (req, res) => {
-  const title = req.body.title;
-  const date = req.body.date;
-  const desc = req.body.desc;
-  const point = req.body.point;
-  const image = req.file.filename;
-  console.log(req);
-  cloudinary.uploader.upload(req.file.path, (result) => {
-    db.collection("list").insertOne({
-      title: title,
-      date: date,
-      desc: desc,
-      point: point,
-      image: result.url,
+  db.collection("counter").findOne({ name: "total" }, (err, result) => {
+    const title = req.body.title;
+    const date = req.body.date;
+    const desc = req.body.desc;
+    const point = req.body.point;
+    const image = req.file.filename;
+    const total = result.totalPost;
+    cloudinary.uploader.upload(req.file.path, (result) => {
+      db.collection("list").insertOne({
+        title: title,
+        no: total + 1,
+        image: result.url,
+        point: point,
+        desc: desc,
+        date: date,
+      });
+      db.collection("counter").updateOne({ name: "total" }, { $inc: { totalPost: 1 } }, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+      });
     });
-    res.send(`<script>alert("서버가 끊겼습니다."); location.href="/main"</script>`);
+    res.send(`<script>alert("게시물이 완성되었습니다."); location.href="/main"</script>`);
   });
 });
 app.post("/summerNoteInsertImg", fileUpload02.single("summerNoteImg"), (req, res) => {
