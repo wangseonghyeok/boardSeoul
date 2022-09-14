@@ -1,4 +1,4 @@
-<%- include("include/main"); %> <%- include("include/header"); %>
+<%- include("include/header"); %>
 <main id="main">
   <div class="contents">
     <div class="title">
@@ -9,8 +9,8 @@
     </div>
     <ul class="list">
       <% main.forEach((item,idx)=>{ %>
-      <li>
-        <a href="/detail/<%= item.title %>" class="popup">
+      <li data-idx="<%= item.no %>" data-title="<%= item.title %>" data-image="<%= item.image %>" data-desc="<%= item.desc %>">
+        <a href="/detail/<%= item.title %>">
           <div class="inner">
             <div class="img"><img src="<%= item.image %>" alt="" /></div>
             <div class="txt">
@@ -24,130 +24,235 @@
       </li>
       <% }) %>
     </ul>
-
-    <div class="popupCover">
-      <ul class="popupList">
-        <% main.forEach((item,idx)=>{ %>
-        <li>
-          <a href="/detail/<%= item.title %>">
-            <img src="/images/closeDark.png" class="close" />
-            <div class="popupImg"><img src="<%= item.image %>" alt="" /></div>
-            <div class="popupTxt">
-              <!-- <div class="date"><%= item.date %></div> -->
-              <div class="t1"><%= item.title %></div>
-              <div class="sub"><%- item.desc %></div>
-            </div>
-          </a>
-          <div class="btns">
-            <a
-              href="/detail/<%= item.title %>\
-              "
-              class="chage"
-              >수정</a
-            >
-            <a href="/fileDelete">삭제</a>
-          </div>
-        </li>
-        <% }) %>
-      </ul>
+    <div class="popup">
+      <ul class="popupList"></ul>
     </div>
-
-    <div class="popupInput">
+    <div class="popupModify">
       <div class="popupEdit">
-        <div class="popupBox">
-          <img src="/images/closeDark.png" class="editClose" />
-          <form action="/detail" method="POST" id="join" class="formBox" enctype="multipart/form-data">
-            <div class="inputBox">
-              <label>
-                <span class="label">제목</span>
-                <input type="text" id="title" name="title" placeholder="제목을 입력하세요" />
-              </label>
-            </div>
-            <div class="inputBox">
-              <label>
-                <span class="label">날짜</span>
-                <input type="text" id="date" name="date" placeholder="날짜" />
-              </label>
-            </div>
-            <div class="inputBox">
-              <label>
-                <span class="label">내용</span>
-                <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
-              </label>
-            </div>
-            <div class="inputBox">
-              <label>
-                <span class="label">평점</span>
-                <input type="number" max="5" min="0" step="0.1" id="point" name="point" />
-              </label>
-            </div>
-            <div class="inputBox">
-              <label>
-                <span class="label">대표이미지</span>
-                <input type="file" name="image" id="image" />
-              </label>
-            </div>
-            <div class="btns">
-              <button type="submit" id="btnJoin">확인</button>
-            </div>
-          </form>
-        </div>
+        <!-- <div class="popupBox">
+          <img src="/images/closeDark.png" class="offBtn" />
+          <div class="inputBox">
+            <label>
+              <span class="label">제목</span>
+              <input type="text" id="title" name="title" placeholder="제목을 입력하세요" value="${items.title}" />
+            </label>
+          </div>
+          <div class="inputBox">
+            <label>
+              <span class="label">날짜</span>
+              <input type="text" id="date" name="date" value="${items.date}" placeholder="날짜" />
+            </label>
+          </div>
+          <div class="inputBox">
+            <label>
+              <span class="label">내용</span>
+              <textarea name="desc" id="desc" cols="30" rows="10" value="${items.desc}"></textarea>
+            </label>
+          </div>
+          <div class="inputBox">
+            <label>
+              <span class="label">평점</span>
+              <input type="number" max="5" min="0" step="0.1" id="point" name="point" value="${items.point}" />
+            </label>
+          </div>
+          <div class="inputBox">
+            <label>
+              <span class="label">대표이미지</span>
+              <input type="file" name="image" id="image" value="${items.image}" />
+            </label>
+          </div>
+          <div class="btns">
+            <button type="submit" id="btnJoin">확인</button>
+          </div>
+        </div> -->
       </div>
     </div>
   </div>
 </main>
 <script>
-  const list = document.querySelectorAll(".list li");
-  const popupList = document.querySelectorAll(".popupList li");
-  const close = document.querySelectorAll(".close");
-  const popup = document.querySelector(".popup");
+  const list = document.querySelectorAll(".list > li");
   const date = document.querySelector("#date");
-  const editClose = document.querySelector(".editClose");
-  const chage = document.querySelectorAll(".chage");
-  const popupCover = document.querySelector(".popupCover");
-  const popupInput = document.querySelector(".popupInput");
-
-  console.log(editClose);
-  //
+  const popup = document.querySelector(".popup");
+  const popupList = document.querySelector(".popupList");
+  const popupModify = document.querySelector(".popupModify");
+  const popupEdit = document.querySelector(".popupEdit");
+  const popupObj = {};
   list.forEach(function (item, idx) {
-    item.addEventListener("click", function () {
-      popupList.forEach(function (item01, idx01) {
-        // console.log(idx01);
-        const popupCover = document.querySelector(".popupCover");
-        const body = document.querySelector(".body");
-        idx === idx01 ? (item01.style.display = "block") : (item01.style.display = "none");
-        popupCover.style.display = "block";
-        body.classList.add("on");
-        close.forEach(function (item02, idx02) {
-          item02.addEventListener("click", function () {
-            const popupCover = document.querySelector(".popupCover");
-            idx01 === idx02 ? (popupCover.style.display = "none") : "";
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+      const clickedNum = this.dataset.idx;
+      axios({ url: `http://127.0.0.1:8099/detail/${clickedNum}`, method: "POST" })
+        .then((response) => {
+          console.log(response);
+          popup.style.display = "block";
+          let popupHtml = "";
+          const items = response.data;
+          popupObj.image = items.image;
+          popupObj.desc = items.desc;
+          popupObj.title = items.title;
+          console.log(popupObj);
+          popupHtml = `
+          <li>
+            <div class="inner">
+            <img src="/images/closeDark.png" class="closeBtn" />
+            <div class="popupImg">
+              <img src="${items.image}"  />
+            </div>
+            <div class="popupTxt">
+              <div class="text"><h2>${items.title}</h2></div>
+              <div class="desc"><p>${items.desc}</p></div>
+            </div>
+            <div class="btns">
+              <button class="modify" data-idx=${items.no}>수정</button>
+              <a href="" class="delete">삭제</a>
+            </div>
+            </div>
+          </li>`;
+          let modifyHtml = "";
+
+          modifyHtml = `
+            <div class="popupBox">
+            <img src="/images/closeDark.png" class="offBtn" />
+            <div class="inputBox">
+              <label>
+                <span class="label">제목</span>
+                <input type="text" id="title" name="title" placeholder="제목을 입력하세요" value="${items.title}" />
+              </label>
+            </div>
+            <div class="inputBox">
+              <label>
+                <span class="label">날짜</span>
+                <input type="text" id="date" name="date" value="${items.date}" placeholder="날짜" />
+              </label>
+            </div>
+            <div class="inputBox">
+              <label>
+                <span class="label">내용</span>
+                <textarea name="desc" id="desc" cols="30" rows="10" value="${items.desc}" ></textarea>
+              </label>
+            </div>
+            <div class="inputBox">
+              <label>
+                <span class="label">평점</span>
+                <input type="number" max="5" min="0" step="0.1" id="point" name="point" value="${items.point}" />
+              </label>
+            </div>
+            <div class="inputBox">
+              <label>
+                <span class="label">대표이미지</span>
+                <input type="file" name="image" id="image"  value="${items.image}" />
+              </label>
+            </div>
+            <div class="btns">
+              <button type="submit" id="btnJoin">확인</button>
+            </div>
+          </div>
+            `;
+          popupList.innerHTML = popupHtml;
+          popupEdit.innerHTML = modifyHtml;
+          const closeBtn = document.querySelector(".closeBtn");
+          closeBtn.addEventListener("click", () => {
+            popup.style.display = "none";
           });
-        });
-        chage.forEach((item03, idx03) => {
-          item03.addEventListener("click", function () {
-            const popupInput = document.querySelector(".popupInput");
-            idx01 === idx03 ? (popupInput.style.display = "block") : "";
+          const modify = document.querySelector(".modify");
+          const btnJoin = document.querySelector("#btnJoin");
+          modify.addEventListener("click", function () {
+            // const number = this.dataset.idx;
+            // //axios({ url: `http://127.0.0.1:8099/detail/${number}`, method: "POST" });
+            const popupModify = document.querySelector(".popupModify");
+            popupModify.style.display = "block";
           });
+          btnJoin.addEventListener("click", function () {
+            console.log("btnJoin");
+            const title = $("#title").val();
+            const desc = $("#desc").val();
+            console.log(title);
+
+            axios.post(`http://127.0.0.1:8099/edit`, { no: 1, title: title, desc: desc }).then((res) => {
+              console.log(res);
+
+              const result = res.data;
+              console.log(result);
+              if (result.isOk === "ok") {
+                //location.reload();
+                // console.log($(".list li:nth-child(1)"));
+                // console.log($(".list li[data-idx='1']"));
+                // console.log($(`.list li[${clickedNum}]`));
+                // console.log($(`.list li[${clickedNum}]`).find(".listTitle"));
+                // console.log(list[clickedNum]);
+                console.log(
+                  $(".list li")
+                    .eq(clickedNum - 1)
+                    .find(".listTitle")
+                );
+                $(".list li")
+                  .eq(clickedNum - 1)
+                  .find(".listTitle")
+                  .text(result.editData.title);
+              }
+            });
+          });
+          // .then((res) => {
+          //   console.log(res);
+          //   let modifyHtml = "";
+          //   const items = res.data;
+          //   modifyHtml = `
+          //   <div class="popupBox">
+          //   <img src="/images/closeDark.png" class="offBtn" />
+          //   <div class="inputBox">
+          //     <label>
+          //       <span class="label">제목</span>
+          //       <input type="text" id="title" name="title" placeholder="제목을 입력하세요" value="${items.title}" />
+          //     </label>
+          //   </div>
+          //   <div class="inputBox">
+          //     <label>
+          //       <span class="label">날짜</span>
+          //       <input type="text" id="date" name="date" value="${items.date}" placeholder="날짜" />
+          //     </label>
+          //   </div>
+          //   <div class="inputBox">
+          //     <label>
+          //       <span class="label">내용</span>
+          //       <textarea name="desc" id="desc" cols="30" rows="10" value="${items.desc}" ></textarea>
+          //     </label>
+          //   </div>
+          //   <div class="inputBox">
+          //     <label>
+          //       <span class="label">평점</span>
+          //       <input type="number" max="5" min="0" step="0.1" id="point" name="point" value="${items.point}" />
+          //     </label>
+          //   </div>
+          //   <div class="inputBox">
+          //     <label>
+          //       <span class="label">대표이미지</span>
+          //       <input type="file" name="image" id="image"  value="${items.image}" />
+          //     </label>
+          //   </div>
+          //   <div class="btns">
+          //     <button type="submit" id="btnJoin">확인</button>
+          //   </div>
+          // </div>
+          //   `;
+          // modify.addEventListener("click", () => {
+          //   popupModify.style.display = "block";
+          //   popup.style.display = "none";
+          // });
+          // });
+
+          // popupEdit.innerHTML = modifyHtml;
+          const offBtn = document.querySelector(".offBtn");
+          offBtn.addEventListener("click", () => {
+            popupModify.style.display = "none";
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-        // editClose.forEach((item04, idx04) => {
-        //   item04.addEventListener("click", function () {
-        //     const popupInput = document.querySelector(".popupInput");
-        //     idx01 === idx04 ? (popupInput.style.display = "block") : "";
-        //   });
-        // });
-      });
     });
   });
-  editClose.addEventListener("click", () => {
-    popupInput.style.display = "none";
-    popupCover.style.display = "none";
-  });
 
-  // close.addEventListener("click", () => {
-  //   popupCover.style.display = "none";
-  // });
-  const picker = new Lightpick({ field: date, format: "YYYY-MM-DD" });
+  // const picker = new Lightpick({ field: date, format: "YYYY-MM-DD" });
   $("#desc").summernote({
     height: 400,
     callbacks: {

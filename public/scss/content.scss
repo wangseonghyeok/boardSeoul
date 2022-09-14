@@ -16,6 +16,9 @@ a {
 button {
   border: none;
 }
+label {
+  margin-bottom: 0rem;
+}
 #header {
   position: relative;
   height: 90px;
@@ -138,13 +141,15 @@ button {
                 color: #fff;
                 font-size: 15px;
                 line-height: 1.5;
-                height: 101px;
+                height: 5.7em;
                 overflow: hidden;
+
                 p {
                   width: clamp(260px, 19vw, 420px);
                   color: #fff;
                   margin-bottom: 0rem !important;
                   text-overflow: ellipsis !important;
+
                   span {
                     text-overflow: ellipsis !important;
                     color: #fff !important;
@@ -197,16 +202,18 @@ button {
       }
     }
   }
-  .popupCover {
+  .popup {
     display: none;
+
     .popupList {
       width: 100%;
-      height: 100%;
+      height: 100vh;
       display: flex;
+
       z-index: 2;
       top: 0;
       left: 0;
-      position: absolute;
+      position: fixed;
       li {
         display: inline-block;
         display: block;
@@ -216,9 +223,9 @@ button {
         width: 660px;
         background: #fff;
 
-        a {
+        .inner {
           position: relative;
-          .close {
+          .closeBtn {
             z-index: 2;
             position: absolute;
             top: 30px;
@@ -237,12 +244,14 @@ button {
           .popupTxt {
             position: relative;
             padding: 50px 60px 0px 60px;
-            .date {
-              position: absolute;
-              right: 60px;
-              top: 0;
+            .text {
+              h2 {
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 20px;
+              }
             }
-            .sub {
+            .desc {
               p {
                 margin-bottom: 0rem;
                 span {
@@ -252,11 +261,6 @@ button {
                   line-height: 1.5 !important;
                 }
               }
-            }
-            .t1 {
-              font-size: 20px;
-              font-weight: 600;
-              margin-bottom: 20px;
             }
           }
         }
@@ -268,6 +272,7 @@ button {
           display: flex;
           justify-content: space-between;
 
+          button,
           a {
             color: #fff;
             width: 255px;
@@ -290,22 +295,16 @@ button {
           height: 100%;
           background: rgba(0, 0, 0, 0.5);
         }
-        &.on {
-          display: block;
-        }
       }
     }
-    &.on {
-      display: block;
-    }
   }
-  .popupInput {
+  .popupModify {
     display: none;
 
     .popupEdit {
       z-index: 2;
       top: 0;
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100vh;
       background: rgba(0, 0, 0, 0.5);
@@ -313,71 +312,71 @@ button {
       justify-content: center;
       align-items: center;
       .popupBox {
+        border-radius: 30px;
         position: relative;
         width: 660px;
         background: #fff;
-        .editClose {
+        padding-top: 35px;
+        .offBtn {
+          z-index: 2;
+          position: absolute;
+          top: 30px;
+          right: 30px;
+        }
+        .off {
           position: absolute;
           right: 30px;
           top: 30px;
         }
-        .formBox {
-          padding: 60px;
-          .inputBox {
-            label {
-              span {
-                margin-top: 20px;
-              }
+        .inputBox {
+          padding: 0px 60px;
+          label {
+            span {
+              margin-top: 15px;
+            }
+            width: 100%;
+            .label {
               width: 100%;
-              .label {
-                width: 100%;
-                font-size: 18px;
-                font-weight: 500;
-                display: block;
-              }
-              input {
-                border-radius: 10px;
-                border-color: #ddd;
-                margin-top: 10px;
-                width: 100%;
-                height: 50px;
-                padding-left: 10px;
-                &::placeholder {
-                  font-size: 14px;
-                }
-              }
-              .note-editor {
-                height: 200px;
-                margin-top: 10px;
+              font-size: 16px;
+              font-weight: 500;
+              display: block;
+            }
+            input {
+              border-radius: 10px;
+              border-color: #ddd;
+              margin-top: 10px;
+              width: 100%;
+              height: 50px;
+              padding-left: 10px;
+              &::placeholder {
+                font-size: 14px;
               }
             }
-            &:nth-child(5) {
-              input {
-                padding-left: 0px;
-              }
+            .note-editor {
+              height: 200px;
+              margin-top: 10px;
             }
           }
-          .btns {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            button {
-              color: #fff;
-              width: 255px;
-              height: 50px;
-              border-radius: 30px;
-              background: #111;
-              text-align: center;
-            }
+          #image {
+            padding-left: 0px;
+          }
+        }
+
+        .btns {
+          padding: 10px 0 60px 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          button {
+            color: #fff;
+            width: 255px;
+            height: 50px;
+            border-radius: 30px;
+            background: #111;
+            text-align: center;
           }
         }
       }
-      &.on {
-        display: block;
-      }
-    }
-    &.on {
-      display: block;
     }
   }
 }
