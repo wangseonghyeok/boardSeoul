@@ -7,7 +7,7 @@ const session = require("express-session");
 const dotenv = require("dotenv").config();
 const cloudinary = require("cloudinary");
 const multer = require("multer");
-const { nextTick } = require("process");
+const { nextTick, rawListeners } = require("process");
 
 //데이터 서버에 저장
 app.use(
@@ -184,17 +184,7 @@ app.post("/mypage", (req, res) => {
     res.send(`<script>alert("회원정보 수정이 되었습니다.");location.href="/login";</script>`);
   });
 });
-// app.get("/detail/:title", (req, res) => {
-//   const title = req.params.title;
-//   db.collection("list").findOne({ title: title }, (err, result) => {
-//     // if (result) {
-//     //   res.render("detail", { title: "detail", data: result });
-//     // }
-//     if (err) {
-//       console.log(err);
-//     }
-//   });
-// });s
+
 app.post("/detail/:id", (req, res) => {
   const id = parseInt(req.params.id);
   console.log(id);
@@ -208,29 +198,35 @@ app.post("/detail/:id", (req, res) => {
   });
 });
 
-app.post("/edit", fileUpload01.single("image"), (req, res) => {
-  const title = req.body.title;
-  const date = req.body.date;
-  const desc = req.body.desc;
-  const point = req.body.point;
-  const no = req.body.no;
-  // const image = req.file.filename;
-  // const total = result.totalPost;
-  const insert = {
-    title: title,
-    date: date,
-    desc: desc,
-    point: point,
-  };
-
-  console.log(insert);
-  db.collection("list").updateOne({ no: no }, { $set: { title: title, date: date, desc: desc, point: point } }, (err, result) => {
+app.post("/deletePost", (req, res) => {
+  const no = parseInt(req.query.no);
+  console.log(no);
+  db.collection("list").deleteOne({ no: no }, (err, done) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(result);
-      res.json({ isOk: "ok", editData: { title, date, desc, point } });
+      console.log("아무거나");
+      res.json({ isOk: "ok" });
     }
+  });
+});
+
+app.post("/edit", fileUpload01.single("modifyImg"), (req, res) => {
+  const title = req.body.title;
+  const date = req.body.date;
+  const desc = req.body.desc;
+  const point = parseInt(req.body.point);
+  const no = parseInt(req.query.no);
+  const image = req.file.filename;
+  // const total = result.totalPost;
+  cloudinary.uploader.upload(req.file.path, (result) => {
+    db.collection("list").updateOne({ no: no }, { $set: { title: title, date: date, desc: desc, point: point, image: result.url } }, (err, done) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json({ isOk: "ok", editData: { title, date, desc, point, no, image: result.url } });
+      }
+    });
   });
 });
 app.get("/delete", (req, res) => {
@@ -262,21 +258,25 @@ app.post("/library", fileUpload01.single("image"), (req, res) => {
     const image = req.file.filename;
     const total = result.totalPost;
     cloudinary.uploader.upload(req.file.path, (result) => {
-      db.collection("list").insertOne({
-        title: title,
-        no: total + 1,
-        image: result.url,
-        point: point,
-        desc: desc,
-        date: date,
-      });
-      db.collection("counter").updateOne({ name: "total" }, { $inc: { totalPost: 1 } }, (err, result) => {
-        if (err) {
-          console.log(err);
+      db.collection("list").insertOne(
+        {
+          title: title,
+          no: total + 1,
+          image: result.url,
+          point: point,
+          desc: desc,
+          date: date,
+        },
+        (err, result) => {
+          db.collection("counter").updateOne({ name: "total" }, { $inc: { totalPost: 1 } }, (err, result) => {
+            if (err) {
+              console.log(err);
+            }
+            res.send(`<script>alert("게시물이 완성되었습니다.");  location.href="/main";</script>`);
+          });
         }
-      });
+      );
     });
-    res.send(`<script>alert("게시물이 완성되었습니다."); location.href="/main"</script>`);
   });
 });
 app.post("/summerNoteInsertImg", fileUpload02.single("summerNoteImg"), (req, res) => {
@@ -315,17 +315,17 @@ app.get("/write", (req, res) => {
   }
 });
 
-// app.post("/idCheck", (req, res) => {
-//   const userID = req.body.userID;
-//   db.collection("member").findOne({ userID: userID }, (err, result) => {
-//     //console.log(result);
-//     if (result === null) {
-//       res.json({ isOk: true });
-//     } else {
-//       res.json({ isOk: false });
-//     }
-//   });
-// });
+app.post("/idCheck", (req, res) => {
+  const userID = req.body.userID;
+  db.collection("member").findOne({ userID: userID }, (err, result) => {
+    //console.log(result);
+    if (result === null) {
+      res.json({ isOk: true });
+    } else {
+      res.json({ isOk: false });
+    }
+  });
+});
 app.listen(PORT, () => {
   console.log(`${PORT}에서 서버 대기중`);
 });

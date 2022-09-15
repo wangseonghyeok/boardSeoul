@@ -37,13 +37,14 @@
       </div>
       <div class="btns">
         <button type="submit" id="btnJoin">확인</button>
-        <button type="reset">취소</button>
+        <a href="/main" type="reset">취소</a>
       </div>
     </form>
   </div>
 </main>
 <script>
   const date = document.querySelector("#date");
+
   const picker = new Lightpick({ field: date, format: "YYYY-MM-DD" });
   $("#desc").summernote({
     height: 400,
@@ -52,6 +53,28 @@
         sendImageCloudinary(files[0], this);
       },
     },
+  });
+  $("#btnJoin").on("click", () => {
+    if ($("#title").val().trim().length < 1) {
+      alert("글자를 입력하세요.");
+      $("#title").focus();
+      return false;
+    } else if ($("#date").val().trim().length < 1) {
+      alert("날짜를 입력하세요.");
+      $("#date").focus();
+      return false;
+    } else if ($("#desc").val().trim().length < 1) {
+      alert("글자를 입력하세요.");
+      $("#desc").focus();
+      return false;
+    } else if ($("#point").val().trim().length < 1) {
+      alert("점수를 입력하세요.");
+      $("#point").focus();
+      return false;
+    } else if ($("#image").val() == "") {
+      alert("파일을 첨부해 주세요.");
+      return false;
+    }
   });
   function sendImageCloudinary(file, editor) {
     const sendImgData = new FormData();

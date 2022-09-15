@@ -28,44 +28,7 @@
       <ul class="popupList"></ul>
     </div>
     <div class="popupModify">
-      <div class="popupEdit">
-        <!-- <div class="popupBox">
-          <img src="/images/closeDark.png" class="offBtn" />
-          <div class="inputBox">
-            <label>
-              <span class="label">제목</span>
-              <input type="text" id="title" name="title" placeholder="제목을 입력하세요" value="${items.title}" />
-            </label>
-          </div>
-          <div class="inputBox">
-            <label>
-              <span class="label">날짜</span>
-              <input type="text" id="date" name="date" value="${items.date}" placeholder="날짜" />
-            </label>
-          </div>
-          <div class="inputBox">
-            <label>
-              <span class="label">내용</span>
-              <textarea name="desc" id="desc" cols="30" rows="10" value="${items.desc}"></textarea>
-            </label>
-          </div>
-          <div class="inputBox">
-            <label>
-              <span class="label">평점</span>
-              <input type="number" max="5" min="0" step="0.1" id="point" name="point" value="${items.point}" />
-            </label>
-          </div>
-          <div class="inputBox">
-            <label>
-              <span class="label">대표이미지</span>
-              <input type="file" name="image" id="image" value="${items.image}" />
-            </label>
-          </div>
-          <div class="btns">
-            <button type="submit" id="btnJoin">확인</button>
-          </div>
-        </div> -->
-      </div>
+      <div class="popupEdit"></div>
     </div>
   </div>
 </main>
@@ -76,21 +39,17 @@
   const popupList = document.querySelector(".popupList");
   const popupModify = document.querySelector(".popupModify");
   const popupEdit = document.querySelector(".popupEdit");
-  const popupObj = {};
+
   list.forEach(function (item, idx) {
     item.addEventListener("click", function (e) {
       e.preventDefault();
       const clickedNum = this.dataset.idx;
       axios({ url: `http://127.0.0.1:8099/detail/${clickedNum}`, method: "POST" })
         .then((response) => {
-          console.log(response);
           popup.style.display = "block";
           let popupHtml = "";
           const items = response.data;
-          popupObj.image = items.image;
-          popupObj.desc = items.desc;
-          popupObj.title = items.title;
-          console.log(popupObj);
+          //첫번째 팝업창
           popupHtml = `
           <li>
             <div class="inner">
@@ -104,14 +63,14 @@
             </div>
             <div class="btns">
               <button class="modify" data-idx=${items.no}>수정</button>
-              <a href="" class="delete">삭제</a>
+              <button class="deletePost " data-idx=${items.no}>삭제</button>
             </div>
             </div>
           </li>`;
+          //수정버튼 팝업창
           let modifyHtml = "";
-
           modifyHtml = `
-            <div class="popupBox">
+          <div class="popupBox">
             <img src="/images/closeDark.png" class="offBtn" />
             <div class="inputBox">
               <label>
@@ -128,7 +87,7 @@
             <div class="inputBox">
               <label>
                 <span class="label">내용</span>
-                <textarea name="desc" id="desc" cols="30" rows="10" value="${items.desc}" ></textarea>
+                <textarea name="desc" id="desc" cols="30" rows="10">${items.desc}</textarea>
               </label>
             </div>
             <div class="inputBox">
@@ -140,111 +99,128 @@
             <div class="inputBox">
               <label>
                 <span class="label">대표이미지</span>
-                <input type="file" name="image" id="image"  value="${items.image}" />
+                <input type="file" name="modifyImg" id="modifyImg"   />
               </label>
             </div>
             <div class="btns">
               <button type="submit" id="btnJoin">확인</button>
             </div>
-          </div>
             `;
           popupList.innerHTML = popupHtml;
           popupEdit.innerHTML = modifyHtml;
+          // 창닫기버튼
           const closeBtn = document.querySelector(".closeBtn");
           closeBtn.addEventListener("click", () => {
             popup.style.display = "none";
           });
+          const offBtn = document.querySelector(".offBtn");
+          offBtn.addEventListener("click", () => {
+            popupModify.style.display = "none";
+            popup.style.display = "none";
+          });
+
+          //modify 수정 버튼
           const modify = document.querySelector(".modify");
-          const btnJoin = document.querySelector("#btnJoin");
           modify.addEventListener("click", function () {
             // const number = this.dataset.idx;
             // //axios({ url: `http://127.0.0.1:8099/detail/${number}`, method: "POST" });
             const popupModify = document.querySelector(".popupModify");
             popupModify.style.display = "block";
           });
-          btnJoin.addEventListener("click", function () {
-            console.log("btnJoin");
-            const title = $("#title").val();
-            const desc = $("#desc").val();
-            console.log(title);
 
-            axios.post(`http://127.0.0.1:8099/edit`, { no: 1, title: title, desc: desc }).then((res) => {
-              console.log(res);
+          const deletePost = document.querySelector(".deletePost");
+          deletePost.addEventListener("click", (e) => {
+            e.preventDefault();
+            axios
+              .post(`http://127.0.0.1:8099/deletePost?no=${clickedNum}`)
+              .then((res) => {
+                const result = res.data;
+                if (result.isOk === "ok") {
+                  alert("게시물이 삭제 되었습니다.");
+                  location.reload();
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+          // 수정 작업
+          const modifyImgFile = document.querySelector("#modifyImg");
+          const modifyTitle = document.querySelector("#title");
+          const modifyDate = document.querySelector("#date");
+          const modifyDesc = document.querySelector("#desc");
+          const modifyPoint = document.querySelector("#point");
 
-              const result = res.data;
-              console.log(result);
-              if (result.isOk === "ok") {
-                //location.reload();
-                // console.log($(".list li:nth-child(1)"));
-                // console.log($(".list li[data-idx='1']"));
-                // console.log($(`.list li[${clickedNum}]`));
-                // console.log($(`.list li[${clickedNum}]`).find(".listTitle"));
-                // console.log(list[clickedNum]);
-                console.log(
+          //btnjoin 확인버튼/작업
+          const btnJoin = document.querySelector("#btnJoin");
+          btnJoin.addEventListener("click", (e) => {
+            const formData = new FormData();
+            formData.append("modifyImg", modifyImgFile.files[0]);
+            formData.append("title", modifyTitle.value);
+            formData.append("date", modifyDate.value);
+            formData.append("desc", modifyDesc.value);
+            formData.append("point", modifyPoint.value);
+            axios({
+              method: "POST",
+              url: `http://127.0.0.1:8099/edit?no=${clickedNum}`,
+              data: formData,
+              enctype: "multipart/form-data",
+              contentType: false,
+              processData: false,
+            })
+              .then((res) => {
+                const result = res.data;
+                console.log(result);
+                if (result.isOk === "ok") {
                   $(".list li")
                     .eq(clickedNum - 1)
                     .find(".listTitle")
-                );
-                $(".list li")
-                  .eq(clickedNum - 1)
-                  .find(".listTitle")
-                  .text(result.editData.title);
-              }
-            });
-          });
-          // .then((res) => {
-          //   console.log(res);
-          //   let modifyHtml = "";
-          //   const items = res.data;
-          //   modifyHtml = `
-          //   <div class="popupBox">
-          //   <img src="/images/closeDark.png" class="offBtn" />
-          //   <div class="inputBox">
-          //     <label>
-          //       <span class="label">제목</span>
-          //       <input type="text" id="title" name="title" placeholder="제목을 입력하세요" value="${items.title}" />
-          //     </label>
-          //   </div>
-          //   <div class="inputBox">
-          //     <label>
-          //       <span class="label">날짜</span>
-          //       <input type="text" id="date" name="date" value="${items.date}" placeholder="날짜" />
-          //     </label>
-          //   </div>
-          //   <div class="inputBox">
-          //     <label>
-          //       <span class="label">내용</span>
-          //       <textarea name="desc" id="desc" cols="30" rows="10" value="${items.desc}" ></textarea>
-          //     </label>
-          //   </div>
-          //   <div class="inputBox">
-          //     <label>
-          //       <span class="label">평점</span>
-          //       <input type="number" max="5" min="0" step="0.1" id="point" name="point" value="${items.point}" />
-          //     </label>
-          //   </div>
-          //   <div class="inputBox">
-          //     <label>
-          //       <span class="label">대표이미지</span>
-          //       <input type="file" name="image" id="image"  value="${items.image}" />
-          //     </label>
-          //   </div>
-          //   <div class="btns">
-          //     <button type="submit" id="btnJoin">확인</button>
-          //   </div>
-          // </div>
-          //   `;
-          // modify.addEventListener("click", () => {
-          //   popupModify.style.display = "block";
-          //   popup.style.display = "none";
-          // });
-          // });
-
-          // popupEdit.innerHTML = modifyHtml;
-          const offBtn = document.querySelector(".offBtn");
-          offBtn.addEventListener("click", () => {
+                    .text(result.editData.title);
+                  $(".list li")
+                    .eq(clickedNum - 1)
+                    .find(".point")
+                    .text(`평점 : ${result.editData.point}`);
+                  $(".list li")
+                    .eq(clickedNum - 1)
+                    .find(".date")
+                    .text(result.editData.date);
+                  $(".list li")
+                    .eq(clickedNum - 1)
+                    .find(".sub")
+                    .text(result.editData.desc);
+                  $(".list li")
+                    .eq(clickedNum - 1)
+                    .find(".img img")
+                    .attr("src", result.editData.image);
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            if ($("#title").val().trim().length < 1) {
+              alert("글자를 입력하세요.");
+              $("#title").focus();
+              return false;
+            } else if ($("#date").val().trim().length < 1) {
+              alert("날짜를 입력하세요.");
+              $("#date").focus();
+              return false;
+            } else if ($("#desc").val().trim().length < 1) {
+              alert("글자를 입력하세요.");
+              $("#desc").focus();
+              return false;
+            } else if ($("#point").val().trim().length < 1) {
+              alert("점수를 입력하세요.");
+              $("#point").focus();
+              return false;
+            } else if ($("#modifyImg").val() == "") {
+              alert("파일을 첨부해 주세요.");
+              return false;
+            }
+            popup.style.display = "none";
             popupModify.style.display = "none";
           });
+          // $("#btnJoin").on("click", () => {});
         })
         .catch((error) => {
           console.log(error);
@@ -261,6 +237,7 @@
       },
     },
   });
+
   function sendImageCloudinary(file, editor) {
     const sendImgData = new FormData();
     sendImgData.append("summerNoteImg", file);
