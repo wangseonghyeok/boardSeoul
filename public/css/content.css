@@ -27,8 +27,6 @@ label {
   background-color: #111;
 }
 #header #logo {
-  position: relative;
-  z-index: 10;
   font-size: 0rem;
   color: #fff;
   height: 90px;
@@ -38,6 +36,8 @@ label {
 }
 #header #logo img {
   width: 135px;
+  position: relative;
+  z-index: 10;
 }
 #header ul {
   color: #fff;
