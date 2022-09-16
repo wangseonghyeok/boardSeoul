@@ -382,38 +382,6 @@ button {
   }
 }
 
-@media all and (min-width: 1320px) {
-  #main {
-    .contents {
-      .list {
-        li {
-          a {
-            .inner {
-              .txt {
-                &:hover {
-                  opacity: 1;
-                  &::after {
-                    border-radius: 10px;
-                    top: 0;
-                    left: 0;
-                    z-index: -1;
-                    width: clamp(320px, 22vw, 420px);
-                    height: 100%;
-                    content: "";
-                    background-color: #111;
-                    opacity: 0.5;
-                    position: absolute;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 @media all and (max-width: 1320px) {
   .wrap {
     .main {
