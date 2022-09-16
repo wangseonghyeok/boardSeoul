@@ -37,7 +37,7 @@ label {
 #header #logo img {
   width: 135px;
   position: relative;
-  z-index: 10;
+  z-index: 1;
 }
 #header ul {
   color: #fff;
