@@ -432,10 +432,42 @@ label {
     }
   }
   #main {
+    .popup {
+      .popupList {
+        // position: absolute;
+
+        height: 100%;
+        li {
+          // margin: 15px 15px;
+          width: clamp(330px, 90vw, 660px);
+          .inner {
+            .popupTxt {
+              padding: 30px 30px 0px 30px;
+              .desc {
+                height: 6em;
+                overflow: hidden;
+              }
+            }
+            .popupImg {
+              img {
+                width: clamp(330px, 90vw, 660px);
+                height: clamp(280px, 78vw, 400px);
+                background-size: auto;
+              }
+            }
+          }
+          .btns {
+            padding: 30px;
+            button {
+              width: clamp(130px, 35vw, 255px);
+            }
+          }
+        }
+      }
+    }
     .contents {
       .list {
         li {
-          margin: 15px 15px;
           a {
             .listTitle {
             }

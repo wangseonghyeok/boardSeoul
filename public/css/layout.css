@@ -217,7 +217,7 @@ button {
 #main .title {
   display: flex;
   justify-content: center;
-  margin: 50px 0 50px 0;
+  margin: 50px 0 clamp(0px, 2vw, 50px) 0;
 }
 #main .title h2 {
   font-size: 20px !important;
@@ -235,17 +235,32 @@ button {
   bottom: -6px;
 }
 #main #contents {
-  max-width: 1320px;
+  max-width: 1380px;
   margin: auto;
+  padding: 0 30px;
+}
+#main #contents h2 {
+  font-size: 20px !important;
+  font-family: "Lato";
+  font-weight: 600;
+  position: relative;
+}
+#main #contents h2::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  background-color: #111;
+  height: 2px;
+  left: 0;
+  bottom: -6px;
 }
 #main #contents .formBox .inputBox {
-  border-bottom: 1px solid #ccc;
-  padding: 20px;
+  padding-top: 20px;
 }
 #main #contents .formBox .inputBox label {
   display: flex;
-  align-items: center;
   margin-bottom: 0;
+  flex-direction: column;
 }
 #main #contents .formBox .inputBox label .label {
   width: 150px;
@@ -258,6 +273,8 @@ button {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
+  width: 100%;
+  margin-top: 10px;
 }
 #main #contents .formBox .inputBox label textarea {
   flex-grow: 1;
@@ -283,9 +300,6 @@ button {
 }
 #main #contents .formBox .inputBox label .genreList li {
   margin-right: 20px;
-}
-#main #contents .formBox .inputBox:nth-child(1) {
-  border-top: 1px solid #ccc;
 }
 #main #contents .table {
   display: table;
