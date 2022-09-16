@@ -169,21 +169,6 @@ label {
   right: 30px;
   bottom: 30px;
 }
-#main .contents .list li a .inner .txt:hover {
-  opacity: 1;
-}
-#main .contents .list li a .inner .txt:hover::after {
-  border-radius: 10px;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: clamp(320px, 22vw, 420px);
-  height: 100%;
-  content: "";
-  background-color: #111;
-  opacity: 0.5;
-  position: absolute;
-}
 #main .contents .list li a .listTitle {
   width: clamp(320px, 20vw, 420px);
   font-size: 16px;
@@ -362,6 +347,23 @@ label {
   }
   #main .contents .list li {
     display: inline-block;
+  }
+}
+@media all and (min-width: 1320px) {
+  #main .contents .list li a .inner .txt:hover {
+    opacity: 1;
+  }
+  #main .contents .list li a .inner .txt:hover::after {
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: clamp(320px, 22vw, 420px);
+    height: 100%;
+    content: "";
+    background-color: #111;
+    opacity: 0.5;
+    position: absolute;
   }
 }
 @media all and (max-width: 720px) {
