@@ -48,3 +48,4 @@ Node.js 활용한 게시판 개발
             formData.append("desc", modifyDesc.value);
             formData.append("point", modifyPoint.value);
 ```
+##server deployment : https://seoulboard.herokuapp.com/login
