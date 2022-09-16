@@ -97,6 +97,11 @@ const storage = multer.diskStorage({});
 const fileUpload01 = multer({ storage: storage });
 const fileUpload02 = multer({ storage: storage });
 //로그인
+
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
+
 app.get("/login", (req, res) => {
   res.render("index", { title: "로그인", userInfo: req.user });
 });
