@@ -44,7 +44,7 @@
     item.addEventListener("click", function (e) {
       e.preventDefault();
       const clickedNum = this.dataset.idx;
-      axios({ url: `http://127.0.0.1:8099/detail/${clickedNum}`, method: "POST" })
+      axios({ url: `https://seoulboard.herokuapp.com/detail/${clickedNum}`, method: "POST" })
         .then((response) => {
           popup.style.display = "block";
           let popupHtml = "";
@@ -132,7 +132,7 @@
           deletePost.addEventListener("click", (e) => {
             e.preventDefault();
             axios
-              .post(`http://127.0.0.1:8099/deletePost?no=${clickedNum}`)
+              .post(`https://seoulboard.herokuapp.com/deletePost?no=${clickedNum}`)
               .then((res) => {
                 const result = res.data;
                 if (result.isOk === "ok") {
@@ -162,7 +162,7 @@
             formData.append("point", modifyPoint.value);
             axios({
               method: "POST",
-              url: `http://127.0.0.1:8099/edit?no=${clickedNum}`,
+              url: `https://seoulboard.herokuapp.com/edit?no=${clickedNum}`,
               data: formData,
               enctype: "multipart/form-data",
               contentType: false,
