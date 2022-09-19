@@ -1,6 +1,6 @@
 # Introduction
 Node.js 활용한 게시판 개발
-* Component : Language Node,JavaScript,MongoDB
+* Component Language : Node,JavaScript,MongoDB
 * design : Adobe XD
 
 # Description
