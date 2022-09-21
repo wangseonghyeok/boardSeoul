@@ -19,10 +19,10 @@ Node.js 활용한 게시판 개발
 * 세션만료를 통한 로그아웃처리
 * MongoDB 연동을 통한 회원 데이터베이스 구현
 * Cloudinary 사용하여 이미지 저장 
-데이터
+
 # Development(important part)
 + Password데이터베이스 연동 
-  + passport.initialize(), passport.session() 통해서 passport를 미들웨어로 등록했습니다. 로그인에 성공할 시 serializeUser 메서드를 통해서 사용자 정보를 Session에 저장인증이 완료되고 페이지 이동시 deserializeUser 메서드가 호출합니다.
+  * passport.initialize(), passport.session() 통해서 passport를 미들웨어로 등록했습니다. 로그인에 성공할 시 serializeUser 메서드를 통해서 사용자 정보를 Session에 저장인증이 완료되고 페이지 이동시 deserializeUser 메서드가 호출합니다.
 
 ![로그인](https://user-images.githubusercontent.com/102776957/190355394-47d3d32c-d43c-433f-95c3-a69715da3a42.jpg)
 
